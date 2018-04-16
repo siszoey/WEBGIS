@@ -67,7 +67,6 @@
     <Content Include="leaflet\数组去重.html" />
     <Content Include="web\数组去重.html" />
     <Content Include="区块链.html" />
-    <Content Include="Z_OTHE_RADA2DVILD_201307120036.img" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="beijing.png" />
@@ -81,7 +80,6 @@
     <Content Include="streamlayer.html" />
     <Content Include="zhuhong.html" />
     <Content Include="js实现选择器.html" />
-    <Content Include="Z_OTHE_RADAMCR_2013071200242.tif" />
     <Content Include="无标题.png" />
     <Content Include="跨域请求.html" />
     <Content Include="同源策略.html" />
