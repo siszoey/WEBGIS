@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>伪元素学习</title>
+   
+    <script>
+        window.onload = function () {
+            // 初始化
+            var Y = document.body.scrollTop;
+            // 动态加入style
+            var newstyle = document.createElement("style");
+            // console.log(newstyle);
+            newstyle.setAttribute("id", "addStyle");
+            // document.body.appendChild(newstyle);
+            // console.log(document.getElementsByTagName('head'));
+            document.getElementsByTagName('head')[0].appendChild(newstyle);
+
+            document.getElementById('box1').style.position = "fixed";
+            document.getElementById('box2').style.position = "fixed";
+            document.getElementById('box2').style.top = "50px";
+            var preY = 0;
+            // console.log(Y);
+            // 定义速度初始值
+            var speed = 100;
+
+            var scrollFunc = function (e) {
+                'use strict';
+                e = e || window.event;
+                // console.log(e);
+                // 清空动画
+                document.getElementById('box1').style.animation = "";
+                document.getElementById('box2').style.animation = "";
+
+                // 定义本次滚动的距离，判断是上下滚动
+                var distance = e.deltaY;
+                // 用滚动距离来比拟速度
+                var speed2 = distance / speed;
+                // 或者当前滚动的高度
+                var curY = document.body.scrollTop;
+                var newStyle2 = document.getElementById('addStyle');
+                // 向上滚动
+                if (distance > 0) {
+                    // console.log("向下滚动");
+                    // 传入动态滚动距离
+                    newStyle2.innerHTML = '@-webkit-keyframes toDown{0%   {top:0px;}50%   {top:' + distance + 'px;}100% {top:0px;}}\n' + '@keyframes toDown {0%   {top:0px;}50%   {top:' + distance + 'px;}100% {top:0px;}}\n' + '@-webkit-keyframes toDown2{0%   {top:50px;}50%   {top:' + 2 * distance + 'px;}100% {top:50px;}}\n' + '@keyframes toDown2 {0%   {top:50px;}50%   {top:' + 2 * distance + 'px;}100% {top:50px;}}\n';
+
+                    document.getElementById('box1').style.animation = "toDown " + speed2 / 2 + "s";
+                    document.getElementById('box2').style.animation = "toDown2 " + speed2 / 3 + "s";
+                    // 向下滚动
+                } else {
+                    // console.log("向上滚动");
+                    // 传入动态滚动距离
+                    newStyle2.innerHTML = '@-webkit-keyframes toDown{0%   {top:0px;}50%   {top:' + (-distance) + 'px;}100% {top:0px;}}\n' + '@keyframes toDown {0%   {top:0px;}50%   {top:' + (-distance) + 'px;}100% {top:0px;}}\n' + '@-webkit-keyframes toDown2{0%   {top:50px;}50%   {top:' + 2 * (-distance) + 'px;}100% {top:50px;}}\n' + '@keyframes toDown2 {0%   {top:50px;}50%   {top:' + 2 * (-distance) + 'px;}100% {top:50px;}}\n';
+
+                    document.getElementById('box1').style.animation = "toDown " + (-speed2 / 2) + "s";
+                    ;
+                    document.getElementById('box2').style.animation = "toDown2 " + (-speed2 / 3) + "s";
+                    ;
+                }
+            }
+            // 注册监听鼠标滚动事件
+            if (document.addEventListener) {
+                document.addEventListener('DOMMouseScroll', scrollFunc, false);
+            }//W3C
+            //IE/Opera/Chrome
+            window.onmousewheel = document.onmousewheel = scrollFunc;
+        }
+    </script>
+</head>
+
+    <body style="height: 5000px" id="wrapper">
+        <div style=" width: 300px; height: 100px; background:#000;" id="box1"></div>
+        <div style=" width: 300px; height: 100px; background:red;" id="box2"></div>
+        <script>
+            //这里是答题区
+        </script>
+    </body>
+</html>

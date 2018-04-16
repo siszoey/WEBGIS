@@ -1,0 +1,55 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        var genCssSelector = function () {
+            //you code here
+            var ele = arguments[0];
+            var parentEle = ele.parentNode;
+            var strGenCssSelector = ele.tagName.toLowerCase();
+            while (parentEle.nodeName.toLowerCase() !== '#document') {
+                if (parentEle.id !== '') {
+                    strGenCssSelector = '#' + parentEle.id + ' ' + strGenCssSelector;
+                    parentEle = parentEle.parentNode;
+                    continue;
+                } else if (parentEle.className != '') {
+                    strGenCssSelector = ' ' + strGenCssSelector;
+                    var classList = parentEle.classList || parentEle.className.split(' ');
+                    for (var i = 0; i < classList.length; i++) {
+                        strGenCssSelector = '.' + classList[i] + strGenCssSelector;
+                    }
+                    parentEle = parentEle.parentNode;
+                    continue;
+                } else {
+                    strGenCssSelector = parentEle.nodeName.toLowerCase() + ' ' + strGenCssSelector;
+                    parentEle = parentEle.parentNode;
+                    continue;
+                }
+            }
+            return strGenCssSelector;
+        }
+        document.addEventListener('click', function (e) {
+            //点击li时，返回html body #page .content.main .refer ul li
+            alert(genCssSelector(e.target));
+        })
+    </script>
+</head>
+<body>
+    <div id="page">
+        <div class="content main">
+            <div class="refer">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    ...
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+</body>
+</html>

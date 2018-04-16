@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>同源策略</title>
+   <style>
+       div {
+           width:800px;
+           height:800px;
+       }
+   </style>
+</head>
+    <body>
+       <div>
+           <input id="getpw" type="button" value="获取密码" />
+           <iframe style="width:100%;height:100%;" src="https://auth.alipay.com/login/index.htm"></iframe>
+       </div>    
+        <script>
+            document.getElementById("getpw").onclick = function () {
+                document.getElementById("password_rsainput"); //测试是否能获取到该input元素
+            }
+           
+        </script>
+    </body>
+</html>

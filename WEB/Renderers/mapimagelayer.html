@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
+    <script src="http://localhost:8008/3.18/init.js"></script>   
+    <script type="text/javascript">
+        var map;
+        require([
+            "esri/map",
+            "esri/layers/MapImage",
+           "esri/layers/MapImageLayer",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/geometry/Extent",
+            "dojo/domReady!"],
+                function (
+                     Map,
+                     MapImage,
+                     MapImageLayer,
+                     ArcGISDynamicMapServiceLayer,
+                     Extent) {
+                    var map = new Map("map");
+                    var layer = new ArcGISDynamicMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/proandcap/MapServer");
+                    //将地图服务对象添加到地图容器中
+                    map.addLayer(layer);
+
+                    var mil = new MapImageLayer({
+                        'id': 'usgs_screen_overlay'
+                    });
+                    var mi = new MapImage({
+                        extent: new Extent(115.065477, 32.829642, 122.932974, 38.446202, { wkid: 4326 }),
+                        'href': "无标题.png"
+                    });
+                   
+                    mil.addImage(mi);
+                    map.addLayer(mil,0);
+                    
+                });
+    </script>
+</head>
+<body>
+    <div id="map">
+    </div>
+</body>
+</html>

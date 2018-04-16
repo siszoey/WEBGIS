@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>时间冒泡及阻止原理</title>
+    <style>
+        .HolyGrail {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+header{
+  flex: 2;
+  background-color:gray;
+}
+
+footer {
+  flex: 1;
+  background-color:gray;
+}
+.HolyGrail-body {
+  display: flex;
+  flex: 12;
+}
+
+.HolyGrail-content {
+  flex: 1;
+  background-color:red;
+}
+
+.HolyGrail-nav, .HolyGrail-ads {
+  /* 两个边栏的宽度设为12em */
+  flex: 0 0 18em;
+  background-color:green;
+}
+
+.HolyGrail-nav {
+  /* 导航放到最左边 */
+  order: -1;
+}
+
+
+@media (max-width: 768px) {
+  .HolyGrail-body {
+    flex-direction: column;
+    flex: 1;
+  }
+  .HolyGrail-nav,
+  .HolyGrail-ads,
+  .HolyGrail-content {
+    flex: auto;
+  }
+}
+    </style>
+   
+</head>
+<body class="HolyGrail">
+    <header>header</header>
+    <div class="HolyGrail-body">
+        <main class="HolyGrail-content">left</main>
+        <nav class="HolyGrail-nav">content</nav>
+        <aside class="HolyGrail-ads">right</aside>
+    </div>
+    <footer>footer</footer>
+</body>
+</html>

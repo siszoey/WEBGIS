@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>分级色彩专题图</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.23/"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #info {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 1em 1em 0 1em;
+            background: #fff;
+            font: 14px sans-serif;
+            width: 250px;
+            text-align: center;
+            border-radius: 0 10px 0 0;
+            border: 1px solid #000;
+        }
+    </style>
+    <script type="text/javascript">
+        var map;
+        require([
+            "esri/map",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/layers/FeatureLayer",
+            "esri/InfoTemplate",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/renderers/ClassBreaksRenderer",
+            "esri/dijit/Legend",
+            "esri/Color",
+            "dojo/dom-style",
+            "dojo/on",
+            "dojo/domReady!"],
+        function (Map, ArcGISDynamicMapServiceLayer,ArcGISTiledMapServiceLayer, FeatureLayer, InfoTemplate, SimpleFillSymbol, ClassBreaksRenderer, Legend, Color, domStyle, on) {
+            map = new Map("map", {
+                basemap: "topo",
+                center: [-102.12, 23.09],
+                zoom: 5,
+                logo: false
+            });
+            //动态方法，可以同时调用动态地图服务地址和切片地图服务地址
+            var moxico = ArcGISDynamicMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincesService/MapServer");
+            map.addLayer(moxico);
+            var symbol = new SimpleFillSymbol();    //设置默认符号样式
+            symbol.setColor(new Color([150, 150, 150, 0.5]));
+            var CBrenderer = new ClassBreaksRenderer(symbol, "Areas");
+            CBrenderer.addBreak(0, 1000, new SimpleFillSymbol().setColor(new Color([56, 168, 0, 0.5])));
+            CBrenderer.addBreak(1000, 10000, new SimpleFillSymbol().setColor(new Color([139, 209, 0, 0.5])));
+            CBrenderer.addBreak(10000, 100000, new SimpleFillSymbol().setColor(new Color([0, 0, 0, 0.5])));
+            CBrenderer.addBreak(100000, 500000, new SimpleFillSymbol().setColor(new Color([255, 255, 0, 0.5])));
+            CBrenderer.addBreak(500000, 1000000, new SimpleFillSymbol().setColor(new Color([255, 128, 0, 0.5])));
+            CBrenderer.addBreak(1000000, Infinity, new SimpleFillSymbol().setColor(new Color([255, 0, 0, 0.5])));
+
+            var infoTemplate = new InfoTemplate("${NAME}", "${*}");    //新建信息模板
+            var featureLayer = new FeatureLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincesService/MapServer/0", {
+                mode: FeatureLayer.MODE_SNAPSHOT,
+                outFields: ["*"],
+                infoTemplate: infoTemplate
+            });
+            featureLayer.setRenderer(CBrenderer);    //渲染器应用到特征图层
+            map.addLayer(featureLayer);            //加载特征图层到地图
+            featureLayer.on("load", function (e) {
+                var legend = new Legend({     //设置专题信息
+                    map: map,
+                    layerInfos: [{
+                        layer: featureLayer,
+                        title: " 全国各省人口分布图"
+                    }]
+                }, "legend");
+                legend.startup();
+            });
+        });
+    </script>
+</head>
+<body class="claro">
+    <div id="map"></div>
+    <div id="info">
+        <div id="legend" style="width=200px;"></div>
+    </div>
+</body>
+</html>

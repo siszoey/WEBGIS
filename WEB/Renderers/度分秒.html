@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+         .circle {
+                width: 32.5px;
+                height: 32.5px;
+                background-color: red;
+                border-radius: 50%;
+                -moz-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                 background-image:url(earth1.png);
+                 -webkit-animation: spin 5s infinite linear;
+            }
+        @-webkit-keyframes spin {
+            0% {
+                /*-moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);*/
+                -webkit-transform: rotate(0deg);
+                /*transform: rotate(0deg);*/
+            }
+
+            100% {
+                -moz-transform: rotate(-360deg);
+                -ms-transform: rotate(-360deg);
+                -webkit-transform: rotate(-360deg);
+                transform: rotate(-360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle"></div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>FindTask</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
+    <script src="http://localhost:8008/3.18/init.js"></script>
+    <script>
+        require([
+            "esri/map",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/tasks/FindTask",
+            "esri/tasks/FindParameters",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/Color",
+            "esri/InfoTemplate",
+            "dojo/_base/array"],
+            function (
+                Map,
+                ArcGISDynamicMapServiceLayer,
+                FindTask,
+                FindParameters,
+                SimpleMarkerSymbol,
+                SimpleLineSymbol,
+                Color,
+                InfoTemplate,
+                Array) {
+                var map = new esri.Map("mapDiv");
+                var MapServer = "http://localhost:6080/arcgis/rest/services/gisTutorial/proandcap/MapServer";
+                var layer = new esri.layers.ArcGISDynamicMapServiceLayer(MapServer);
+                map.addLayer(layer)
+                var pointSym = new SimpleMarkerSymbol(
+                 SimpleMarkerSymbol.STYLE_SQUARE,
+                 20,
+                 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 1),
+                 new Color([255, 255, 0, 0.85])
+                    );
+                var infoTemplate = new InfoTemplate("省会信息", "Name:${Name}");
+                var find = new FindTask(MapServer);
+                var params = new FindParameters();
+                params.layerIds = [0];
+                //确定返回给我们几何信息
+                params.returnGeometry = true;
+                params.searchFields = ["FID", "Name"];
+                document.getElementById("find").onclick = doFind;              
+                function doFind() {       
+                    params.searchText = document.getElementById("searchText").value;
+                    find.execute(params, showResults);                    
+                }
+                function showResults(results) {
+                    //查询前 先清空地图所有graphics
+                    map.graphics.clear();
+                    let result, attribs;
+                    let s = ["<table border=\"1\"><thead><tr style=\"background-color:#ccc;\"><td>Name</td><td>FID</td></tr></thead><tbody id=\"states\">"];
+                    Array.forEach(results, function (result) {
+                        attribs = result.feature.attributes;
+                        s.push("<tr><td>" + attribs.Name + "</td><td>" + attribs.FID + "</td><tr>");                      
+                        let graphic = result.feature;
+                        //赋予相应的符号
+                        graphic.setSymbol(pointSym);
+                        graphic.setInfoTemplate(infoTemplate);
+                        //将graphic添加到地图中，从而实现高亮效果
+                        map.graphics.add(graphic);
+                    });
+                    s.push("</tbody></table>");
+                    document.getElementById("tbl").innerHTML = s.join("");
+                }
+                map.on("mouse-drag-start", function (e) {
+                    document.getElementById("test").innerText="放开我......"
+                })
+                map.on("mouse-drag-end", function (e) {
+                    document.getElementById("test").innerText = "真听话......"
+                })
+            });
+    </script>
+</head>
+<body >  
+    <div>
+        <p id="test"></p>
+        输入省会名称: <input type="text" id="searchText" size="30" value="济南" />
+        <input type="button" value="查询" id="find" />
+        <div id="tbl"></div>
+    </div>  
+    <div id="mapDiv" style="height:500px;"></div> 
+</body>
+</html>

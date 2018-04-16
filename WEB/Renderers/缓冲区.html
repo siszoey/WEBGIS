@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>缓冲区生成</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
+    <script src="http://localhost:8008/3.18/init.js"></script>
+    <style type="text/css">
+        .MapClass {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #000;
+        }
+    </style>
+    <script type="text/javascript">
+        require(["esri/map",
+            "dojo/dom", "dojo/on",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/toolbars/draw",
+            "esri/graphic",
+            "esri/tasks/GeometryService",
+            "esri/tasks/BufferParameters",
+            "dojo/colors",
+            "dojo/domReady!"],
+            function (Map, dom, on,
+                ArcGISDynamicMapServiceLayer,
+                SimpleMarkerSymbol,
+                SimpleLineSymbol,
+                SimpleFillSymbol,
+                Draw,
+                Graphic,
+                GeometryService,
+                BufferParameters, Color) {
+                var map = new esri.Map("mapDiv", {
+                    center: [120.127653, 36.009423]
+                });
+                var layer = new esri.layers.ArcGISDynamicMapServiceLayer
+                ("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincialCaptial/MapServer");
+                map.addLayer(layer);
+                //创建几何服务对象
+                var geometryServices = new GeometryService("http://localhost:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+                //创建缓存参数对象
+                var params = new BufferParameters();
+
+                //使用toolbar上的绘图工具
+                var toolBar = new Draw(map);
+                //创建点符号
+                var pointSymbol = new SimpleMarkerSymbol();
+                pointSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
+                pointSymbol.setSize(12);
+                pointSymbol.setColor(new Color("#FFFFCC"));
+
+                var pointSymbolR = new SimpleMarkerSymbol();
+                pointSymbolR.style = SimpleMarkerSymbol.STYLE_CIRCLE;
+                pointSymbolR.setSize(14);
+                pointSymbolR.setColor(new Color("#000"));
+                //线符号
+                lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255, 0, 0]), 3);
+                //面符号
+                polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, lineSymbol, new Color([255, 255, 0, 0.25]));
+                //给画点按钮绑定事件
+                on(dom.byId("point"), "click", function () {
+                    //激活画点工具
+                    toolBar.activate(Draw.MULTI_POINT, {
+                        showTooltips: true
+                    })
+
+                })
+                //绘图结束绑定事件
+                on(toolBar, "draw-end", function (result) {
+                    //获得点形状
+                    var geometry = result.geometry;
+                    //创建Graphic
+                    var graphicpoint = new Graphic(geometry, pointSymbol);
+                    map.graphics.add(graphicpoint);
+                    //关闭绘图工具
+                    toolBar.deactivate();
+                    params.geometries = [geometry];
+
+
+                })
+                //给缓冲区分析按钮绑定事件
+                on(dom.byId("Btn"), "click", function () {
+                    //缓冲距离
+                    params.distances = [document.getElementById("distance").value];
+                    //空间参考
+                    params.bufferSpatialReference = map.spatialReference;
+                    params.outSpatialReference = map.spatialReference;
+                    //执行分析处理结果
+                    geometryServices.buffer(params, function (result) {
+                        //处理缓冲区分析得到的结果
+                        for (var idx in result) {
+                            //创建Graphic
+                            var graphic = new Graphic(result[idx], polygonSymbol)
+                            //将每一个结果都放在map中
+                            map.graphics.add(graphic)
+                        }
+                    });
+
+
+                })
+                on(dom.byId("clear"), "click", function () {
+                    map.graphics.clear();
+                })
+            });
+    </script>
+</head>
+<body>
+    <div id="mapDiv" class="MapClass"></div>
+    <input id="point" type="button" value="点" />
+    <p><label>缓冲距离:</label><input type="text" id="distance" /><input id="Btn" type="button" value="缓冲分析" /></p>
+    <input id="clear" type="button" value="清除" />
+</body>
+</html>

@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <!--<link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.22/"></script>-->
+    <link rel="stylesheet" href="http://localhost:8008/3.18/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
+
+    <script src="http://localhost:8008/3.18/init.js"></script>
+
+   
+    <style>
+        .buttonClass {
+            margin-bottom:5px;
+        }
+    </style>
+    <script>
+        var map, baseMapLayer, testExtent, pointobj, sr, SimpleMarkerSymbolobj, SimpleMarkerSymbolobj, pointGraphic, graphicLayerobj, colorobj, colorobj2;
+        require([
+        "esri/map", 
+        "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/geometry/Point",
+        "esri/geometry/Extent",
+         "esri/SpatialReference",
+         "esri/symbols/SimpleMarkerSymbol",
+         "esri/symbols/SimpleLineSymbol",
+         "esri/Color",
+         "esri/graphic",
+         "esri/layers/GraphicsLayer",
+         "dojo/on"
+        ], function (
+            Map,
+            ArcGISTiledMapServiceLayer,
+            Point,
+            Extent,
+            SpatialReference,
+            SimpleMarkerSymbol,
+            SimpleLineSymbol,
+            Color,
+            Graphic,
+            GraphicsLayer,
+            on) {
+ 
+            sr = new SpatialReference({ wkid: 4326 });
+            map = new Map("mapDiv", {
+                zoom:3,
+                extent: new Extent(108.278952, 30.244581, 130.944422, 46.563768, sr)
+            });
+            
+
+            pointobj = new Point([120.127653, 36.009423], sr);
+            SimpleMarkerSymbolobj = new SimpleMarkerSymbol(
+                SimpleMarkerSymbol.STYLE_SQUARE,   // 点类型
+                10,                               // 点尺寸
+                new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([255, 0, 0]), 1),//外轮廓线
+                new Color([255, 255, 0, 0.85])
+                );    //点颜色
+
+
+            pointGraphic = new Graphic(pointobj, SimpleMarkerSymbolobj, sr);  //创建一个点图形
+            graphicLayerobj = new GraphicsLayer();
+            graphicLayerobj.add(pointGraphic);                                //将点图形添加到graphic图层
+
+            baseMapLayer = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer");
+            testExtent = new Extent(119.97954, 35.936516, 120.561355, 36.286407, sr);
+
+           
+
+            map.on("dbl-click", function (e) {
+                console.log("map clicked", e.mapPoint.x);
+                console.log("map clicked", e.mapPoint.y);
+            });
+            map.on("load", function () {
+                map.disablePan();
+                map.disableScrollWheel();
+            });
+            
+            
+        });
+        
+            //map.centerAndZoom([103.809594, 36.107277], 1);  
+            
+        /** //Map navigation Methods
+            map.disablePan();                                //控制通过鼠标平移地图                   
+            map.enablePan();
+                                                            
+            map.disableDoubleClickZoom();                    //控制双击鼠标放大地图
+            map.enableDoubleClickZoom();
+
+            map.disableScrollWheel()
+            map.enableScrollWheel()                          //控制鼠标滚轮缩放和平移地图
+            
+
+            map.disableRubberBandZoom()                       //SHIFT + Drag the mouse to zoom in ;SHIFT + CTRL + Drag the mouse to zoom out
+            map.enableRubberBandZoom()
+
+            map.showZoomSlider()
+            map.hideZoomSlider()
+        **/
+            //map.setLevel(10);
+            //map.setZoom(5)
+            
+            //Scale = map.getScale();
+            //Zoom = map.getZoom();
+       
+        function addLayer() {
+            map.addLayer(baseMapLayer);
+        }
+        function generatePoint() {
+            map.addLayer(graphicLayerobj); 
+        }
+        function centerAt() {
+            //以指定点为中心显示地图
+            map.centerAt(pointobj);
+        }
+        function centerAndZoom() {
+            //以指定点为中心显示地图，以缩放级别缩放地图
+            map.centerAndZoom(pointobj, 1);
+        }
+        function setExtent() {
+            //设置地图范围，范围必须和地图的坐标系需要一样
+            map.setExtent(testExtent);
+        }
+        function toScreen() {
+            var scrpoint = map.toScreen(pointobj);
+            alert("pointobj.x:" + pointobj.x + ",pointobj.y" + pointobj.y + "<br />" + "scrpoint.x:" + scrpoint.x + ",scrpoint.y" + scrpoint.y);
+            console.log("pointobj", pointobj);
+            console.log("scrpoint", scrpoint);
+        }
+    </script>
+</head>
+<body style="height:100%;width:100%;">
+    
+    <div id="mapDiv" style="height:700px;width:68.6%;float:left;border-right:5px solid gray;">
+
+    </div>
+    <div style="height:700px;width:30%;float:right;padding-left:10px;border-left:5px solid gray;">
+        <h3>1.esri/map 对象的常用方法:</h3>
+        <input class="buttonClass" type="button" onclick="addLayer()" value="addLayer()方法" />
+        <input class="buttonClass" type="button" onclick="generatePoint()" value="map.addLayer（以graphiclayer为例）方法" />
+        <input class="buttonClass" type="button" onclick="centerAt()" value="centerAt()方法" />
+        <input class="buttonClass" type="button" onclick="centerAndZoom()" value="centerAndZoom()方法" />
+        <input class="buttonClass" type="button" onclick="setExtent()" value="setExtent()方法" />
+        <input class="buttonClass" type="button" onclick="toScreen()" value="toScreen()()方法" />
+    </div>
+   
+
+</body>
+</html>

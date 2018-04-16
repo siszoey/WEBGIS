@@ -1,0 +1,160 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
+    <script src="http://localhost:8008/3.18/init.js"></script>
+    <style>
+        html, body {
+            height: 1000px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #mapDiv {
+            height:100%;
+            width:100%;
+        }
+    </style>
+    <script>
+        var Urlstr = "http://218.201.226.247:1102/arcgis/rest/services/vectors/MapServer/";
+        require([
+            "esri/map",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+             "esri/layers/FeatureLayer",
+             "esri/geometry/Extent",
+            "esri/SpatialReference",
+             "esri/InfoTemplate",
+              "esri/lang",
+            "dojo/domReady!"],
+            function (Map, ArcGISTiledMapServiceLayer, FeatureLayer, Extent, SpatialReference, InfoTemplate,esriLang) {
+
+                var startExtent = new Extent(104.595951, 24.761516, 106.290802, 25.675741, new SpatialReference({ "wkid": 4326 }));
+                var map = new Map("mapDiv", {
+                    basemap:"topo",
+                    //center: [105.196017, 25.44116],
+                   
+                    logo: false,
+                    extent:startExtent
+                });
+                //var layer = new ArcGISTiledMapServiceLayer("http://218.201.226.247:1102/arcgis/rest/services/vectors/MapServer");
+                //map.addLayer(layer);
+                //将地图服务对象添加到地图容器中
+                var featureLayer_govorg = new FeatureLayer(Urlstr + "1", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_govorg);
+
+                var featureLayer_zhen = new FeatureLayer(Urlstr + "2", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_zhen);
+
+
+                 var resultTemplate = new InfoTemplate();
+                resultTemplate.setTitle("详细信息：");
+                resultTemplate.setContent("FID:${FID}<br/>Name:${NAME}<br/>面积:${Shape_Area}");
+                var featureLayer_yiliao = new FeatureLayer(Urlstr + "3", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_yiliao);
+
+                var featureLayer_xuexiao = new FeatureLayer(Urlstr + "4", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_xuexiao);
+              
+
+                var featureLayer_dijishi = new FeatureLayer(Urlstr + "5", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_dijishi);
+                
+                var featureLayer_cun = new FeatureLayer(Urlstr + "6", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_cun);
+
+                var featureLayer_jiudian = new FeatureLayer(Urlstr + "7", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_jiudian);
+
+                var featureLayer_cundao = new FeatureLayer(Urlstr + "8", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_cundao);
+
+                var featureLayer_xiandao = new FeatureLayer(Urlstr + "9", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"],
+                    infoWindow: resultTemplate
+                });
+                map.addLayer(featureLayer_xiandao);
+
+                var featureLayer_tielu = new FeatureLayer(Urlstr + "10", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_tielu);
+
+                var featureLayer_shengdao = new FeatureLayer(Urlstr + "11", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_shengdao);
+
+                var featureLayer_qitalu = new FeatureLayer(Urlstr + "12", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_qitalu);
+
+                var featureLayer_guodao = new FeatureLayer(Urlstr + "13", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_guodao);
+
+                var featureLayer_gaosu = new FeatureLayer(Urlstr + "14", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_gaosu);
+
+                var featureLayer_xiangzhen = new FeatureLayer(Urlstr + "15", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"]
+                });
+                map.addLayer(featureLayer_xiangzhen);
+
+                var featureLayer_xianqu = new FeatureLayer(Urlstr + "16", {
+                    mode: FeatureLayer.MODE_ONDEMAND,
+                    outFields: ["*"],
+                   
+                });
+                map.addLayer(featureLayer_xianqu);
+                featureLayer_xianqu.on("mouse-over", function (evt) {
+
+                    var name = "${NAME}";
+                    var Name = esriLang.substitute(evt.graphic.attributes, name);
+                    alert(Name);
+                })
+               
+            })
+    </script>
+</head>
+<body>
+    <div id="mapDiv"></div>
+</body>
+</html>

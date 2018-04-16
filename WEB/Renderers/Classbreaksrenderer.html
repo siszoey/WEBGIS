@@ -1,0 +1,24 @@
+﻿&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&nbsp; &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+&nbsp; &lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1,maximum-scale=1,user-scalable=no&quot; /&gt;
+&nbsp; &lt;title&gt;加载官方底图&lt;/title&gt;
+&nbsp; &lt;link rel=&quot;stylesheet&quot; href=&quot;http://localhost:8008/3.18/esri/css/esri.css&quot;&gt;
+&nbsp; &lt;script src=&quot;http://localhost:8008/3.18/init.js&quot;&gt;&lt;/script&gt;
+&nbsp; &lt;script&gt;
+&nbsp; &nbsp; require([
+&nbsp; &nbsp; &nbsp; &quot;esri/map&quot;,
+&nbsp; &nbsp; &nbsp; &quot;dojo/domReady!&quot;
+&nbsp; &nbsp; ], function (Map) {
+&nbsp; &nbsp; var map = new Map(&quot;map&quot;, {
+&nbsp; &nbsp; center: [110.423816, 39.909401], // long, lat
+&nbsp; &nbsp; basemap: &quot;gray&quot;
+&nbsp; &nbsp; });
+&nbsp; &nbsp; });
+&nbsp; &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&nbsp; &lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;

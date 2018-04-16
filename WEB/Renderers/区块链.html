@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title></title> 
+    <!-- 引入资源 -->
+    <script src="//unpkg.com/crypto-js/crypto-js.js"></script>
+    <script>
+        var crypto = require('crypto');
+        var md5 = crypto.createHash('md5');
+
+        var result = md5.update('a').digest('hex');
+
+        // 输出：0cc175b9c0f1b6a831c399e269772661
+        console.log(result);
+    </script>
+</head>
+<body>
+    <div id="map">
+    </div>
+</body>
+</html>

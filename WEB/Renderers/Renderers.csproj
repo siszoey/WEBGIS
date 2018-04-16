@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A30316E4-DBDE-421E-98F6-5C9AA21BDB02}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Renderers</RootNamespace>
+    <AssemblyName>Renderers</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="javascript\栈内存.html" />
+    <Content Include="leaflet\数组去重.html" />
+    <Content Include="web\数组去重.html" />
+    <Content Include="区块链.html" />
+    <Content Include="Z_OTHE_RADA2DVILD_201307120036.img" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="beijing.png" />
+    <Content Include="earth1.png" />
+    <Content Include="Earth.png" />
+    <Content Include="mapimagelayer.html" />
+    <Content Include="getWmts服务.html" />
+    <Content Include="getWms服务.html" />
+    <Content Include="identityTask.html" />
+    <Content Include="querytask.html" />
+    <Content Include="streamlayer.html" />
+    <Content Include="zhuhong.html" />
+    <Content Include="js实现选择器.html" />
+    <Content Include="Z_OTHE_RADAMCR_2013071200242.tif" />
+    <Content Include="无标题.png" />
+    <Content Include="跨域请求.html" />
+    <Content Include="同源策略.html" />
+    <Content Include="indexdemo.html" />
+    <Content Include="province.png" />
+    <Content Include="shandong.png" />
+    <Content Include="up_arrow.png" />
+    <Content Include="gansu.png" />
+    <Content Include="ztree学习\demo.css" />
+    <Content Include="ztree学习\indexdemo.html" />
+    <Content Include="ztree学习\jquery-1.4.4.min.js" />
+    <Content Include="ztree学习\jquery.ztree.all.min.js" />
+    <Content Include="ztree学习\jquery.ztree.core.js" />
+    <Content Include="ztree学习\line_conn.gif" />
+    <Content Include="ztree学习\zTreeStandard.png" />
+    <Content Include="ztree学习\zTreeStyle.css" />
+    <Content Include="回到顶部.html" />
+    <Content Include="clamp.js" />
+    <Content Include="duck.png" />
+    <Content Include="fish.png" />
+    <Content Include="horse.png" />
+    <Content Include="init.js" />
+    <Content Include="内容溢出符号.html" />
+    <Content Include="basmapgallery.html" />
+    <Content Include="圣杯布局.html" />
+    <Content Include="Classbreaksrenderer.html" />
+    <Content Include="index1.html" />
+    <Content Include="index.html" />
+    <Content Include="legend.html" />
+    <Content Include="findtask.html" />
+    <Content Include="度分秒.html" />
+    <Content Include="缓冲区.html" />
+    <Content Include="字体闪烁.html" />
+    <Content Include="basemap.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>10506</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:10268/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

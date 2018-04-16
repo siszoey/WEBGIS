@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="ztree学习/jquery-1.4.4.min.js"></script>
+    <style>
+        progress {  
+    position: fixed; 
+    left: 0; 
+    bottom: 0; 
+    width: 100%; 
+    height: 5px;  
+    -webkit-appearance: none;   
+    -moz-appearance: none;   
+    appearance: none; 
+        /* Get rid of the default border in Firefox/Opera. */
+    border: none; 
+    /* Progress bar container for Firefox/IE10+ */  
+    background-color: transparent;  
+        /* Progress bar value for IE10+ */  
+    color: red; 
+
+}
+progress::-webkit-progress-bar 
+{   
+    background-color: transparent;
+
+}
+progress::-webkit-progress-value
+    {  
+        background-color: blue;
+
+}
+    progress::-moz-progress-bar 
+    {  
+        background-color: blue;
+
+    }        progress {  
+    position: fixed; 
+    left: 0; 
+    bottom: 0; 
+    width: 100%; 
+    height: 5px;  
+    -webkit-appearance: none;   
+    -moz-appearance: none;   
+    appearance: none; 
+        /* Get rid of the default border in Firefox/Opera. */
+    border: none; 
+    /* Progress bar container for Firefox/IE10+ */  
+    background-color: transparent;  
+        /* Progress bar value for IE10+ */  
+    color: red; 
+
+}
+progress::-webkit-progress-bar 
+{   
+    background-color: transparent;
+
+}
+progress::-webkit-progress-value
+    {  
+        background-color: blue;
+
+}
+    progress::-moz-progress-bar 
+    {  
+        background-color: blue;
+
+    }
+    </style>
+   
+</head>
+<body>
+ <progress id="progress" value="0"></progress>
+  <div style="height:100px;width:100%;padding-bottom:2000px;background-color:yellow;"></div>
+    <script>
+      
+        $(document).ready(function () {
+            var winHeight = $(window).height(), docHeight = docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            max = docHeight - winHeight;
+            $("#progress").attr('max', max);
+
+            var value = $(window).scrollTop();
+            $("#progress").attr('value', value);
+
+            $(document).scroll(function () {
+                value = $(window).scrollTop();
+                $("#progress").attr('value', value);
+            })
+            console.log("value,max", value, max);
+        });
+    </script>
+
+</body>
+</html>

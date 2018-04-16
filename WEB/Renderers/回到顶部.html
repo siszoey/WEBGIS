@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <style>
+        .xiaobaikf { 
+            display:none;
+            position: fixed;
+            bottom: 10%;
+            right: 50px;
+            width:50px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px;
+            padding:1px 0;
+           
+        }
+        .xiaobaikf ul {
+            padding:0;
+            margin:0;
+            list-style:none;
+        }
+        .xiaobaikf ul li {
+            padding:0;
+            margin:0;
+            height:50px;
+            text-align:center;
+        }
+        .xiaobaikf ul li.xiaobaikf_top {
+            background:url(up_arrow.png) no-repeat center; 
+        }
+    </style>
+</head>
+<body>
+    <script>
+// 当网页向下滑动 20px 出现"返回顶部" 按钮
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("xiaobaikf").style.display = "block";
+            } else {
+                document.getElementById("xiaobaikf").style.display = "none";
+            }
+        };
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+    </script>
+    <div class="xiaobaikf" id="xiaobaikf" >
+        <ul>
+            <li class="xiaobaikf_top" id="xiaobaikf_top" onclick="topFunction()" title="回到顶部"></li>
+        </ul>
+    </div>
+    <div style="background-color:lightgrey;padding:30px 30px 2500px">该实例演示了如何实现网页返回顶部效果。</div>
+</body>
+</html>

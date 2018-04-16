@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        html, body {
+            padding: 0;
+            text-align: center;
+        }
+
+        .header, .footer {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            background: #ccc;
+        }
+
+        .cont {
+            width: 100%;
+            overflow: hidden;
+            clear: both;
+        }
+
+            .cont p {
+                padding: 10px 0;
+                clear: both;
+            }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header"><h1>Header</h1></div>
+
+        <div class="cont">
+            <p>三栏布局</p>
+            <div class="main">
+                <!-- main宽度为100%，撑开占满全屏 -->
+                <div class="main-wrap">
+                    <!-- main-wrap设置左右margin -->
+                    <h1>Main</h1>
+                </div>
+            </div>
+            <div class="left">
+                <h1>Left</h1>
+            </div>
+            <div class="right">
+                <h1>Right</h1>
+            </div>
+            <style>
+                .left, .main, .right {
+                    height: 100px;
+                    line-height: 100px;
+                    float: left;
+                    background: #fff;
+                }
+
+                .left {
+                    
+                    width: 190px;
+                    margin-left: -100%;
+                    background: red;
+                }
+                .right {
+                    width: 230px;
+                    margin-left: -230px;
+                    background: #c90;
+                }
+
+                .main {
+                    background-color:gray;
+                    width: 100%;
+                }
+
+                .main-wrap {
+                    margin: 0 230px 0 190px;
+                }
+            </style>
+
+            <p>两栏布局</p>
+            <div class="main2">
+                <div class="main2-wrap">
+                    <h1>Main2</h1>
+                </div>
+            </div>
+            <div class="left2">
+                <h1>Left2</h1>
+            </div>
+
+            <style>
+                .main2, .left2 {
+                    float: left;
+                    height: 100px;
+                    line-height: 100px;
+                }
+
+                .main2 {
+                    width: 100%;
+                    background: #fff;
+                }
+
+                .main2-wrap {
+                    margin-left: 200px;
+                }
+
+                .left2 {
+                    width: 200px;
+                    margin-left: -100%;
+                    background: #c60;
+                }
+            </style>
+
+            <p>两栏布局2</p>
+            <div class="main22">
+                <div class="main22-wrap">
+                    <h1>Main22</h1>
+                </div>
+            </div>
+            <div class="right22">
+                <h1>Right22</h1>
+            </div>
+            <style>
+                .main22, .right22 {
+                    float: left;
+                    height: 100px;
+                    line-height: 100px;
+                    background: #fff;
+                }
+
+                .main22 {
+                    width: 100%;
+                }
+
+                .main22-wrap {
+                    margin-right: 300px;
+                }
+
+                .right22 {
+                    width: 300px;
+                    margin-left: -300px;
+                    background: pink;
+                }
+            </style>
+
+            <p>三栏布局1</p>
+            <div class="main3">
+                <div class="main3-wrap">
+                    <h1>Main3</h1>
+                </div>
+            </div>
+            <div class="left31">
+                <h1>Left31</h1>
+            </div>
+            <div class="left32">
+                <h1>Left32</h1>
+            </div>
+            <style>
+                .main3, .left31, .left32 {
+                    float: left;
+                    height: 100px;
+                    line-height: 100px;
+                    background: #fff;
+                }
+
+                .main3 {
+                    width: 100%;
+                }
+
+                .main3-wrap {
+                    margin-left: 300px;
+                }
+
+                .left31 {
+                    width: 170px;
+                    background: #789;
+                    margin-left: -100%;
+                }
+
+                .left32 {
+                    width: 130px;
+                    background: #c6c6c6;
+                    margin-left: -100%;
+                    position: relative;
+                    left: 170px;
+                }
+            </style>
+
+            <p>三栏布局2</p>
+            <div class="main31">
+                <div class="main31-wrap">
+                    <h1>Main31</h1>
+                </div>
+            </div>
+            <div class="right31">
+                <h1>Right31</h1>
+            </div>
+            <div class="right32">
+                <h1>Right32</h1>
+            </div>
+        </div>
+        <style>
+            .main31, .right31, .right32 {
+                float: left;
+                height: 100px;
+                line-height: 100px;
+                background: #fff;
+            }
+
+            .main31 {
+                width: 100%;
+            }
+
+            .main31-wrap {
+                margin-right: 300px;
+            }
+
+            .right31 {
+                width: 170px;
+                margin-left: -300px;
+                background: green;
+            }
+
+            .right32 {
+                width: 130px;
+                margin-left: -130px;
+                background: yellow;
+            }
+        </style>
+        <div class="footer"><h1>Footer</h1></div>
+    </div>
+</body>
+</html>
