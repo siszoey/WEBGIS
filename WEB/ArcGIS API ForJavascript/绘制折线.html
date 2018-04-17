@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+
+    <meta http-equiv="cache-control" content="no-cache">
+
+    <meta http-equiv="expires" content="0"> 
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>Basemap gallery</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            padding: 0;
+        }
+    </style>   
+     <script>
+        var map;
+        require([
+             "esri/map",
+            "esri/geometry/Polyline",
+             "esri/graphic",
+              "esri/layers/GraphicsLayer",
+               "esri/symbols/SimpleLineSymbol",
+               "esri/Color"
+        ], function (Map, Polyline, Graphic, GraphicsLayer, SimpleLineSymbol, Color) {
+            map = new Map("map", {
+                center: [116.423816, 39.909401],
+                basemap: "topo"
+            });
+            var sls = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH,new Color([255, 0, 0]),3);
+            sls.setMarker({
+                style: "arrow",
+                placement: "end"
+            });
+            var myLine = new Polyline([[84.381474, 38.140792], [100.276738, 36.495173], [109.843333, 27.217139], [117.055073, 33.467357]]);
+            var gra = new Graphic(myLine, sls);
+            var graphLayer = new GraphicsLayer();
+            graphLayer.add(gra);
+            map.addLayer(graphLayer);
+        });
+    </script>
+</head>
+<body>
+   <div id="map"></div>
+</body>
+</html>
