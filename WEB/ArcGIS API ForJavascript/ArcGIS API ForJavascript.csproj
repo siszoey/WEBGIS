@@ -66,10 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="airplane13.png" />
-    <Content Include="duck.png" />
+    <Content Include="getWms服务.html" />
+    <Content Include="使用tomact服务器配置ArcGIS API For Javascript.html" />
     <Content Include="绘制折线.html" />
     <Content Include="Web.config" />
-    <Content Include="轨迹回放 - 复制.html" />
+    <Content Include="飞机轨迹回放.html" />
     <Content Include="轨迹回放.html" />
   </ItemGroup>
   <ItemGroup>
