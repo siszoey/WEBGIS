@@ -4,3 +4,9 @@ H:\Workspace\myself\arcgis api文章\WEB\map-methods\bin\map-methods.pdb
 H:\Workspace\myself\arcgis api文章\WEB\map-methods\obj\Debug\map-methods.csprojResolveAssemblyReference.cache
 H:\Workspace\myself\arcgis api文章\WEB\map-methods\obj\Debug\map-methods.dll
 H:\Workspace\myself\arcgis api文章\WEB\map-methods\obj\Debug\map-methods.pdb
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\bin\map-methods.dll.config
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\bin\map-methods.dll
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\bin\map-methods.pdb
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\obj\Debug\map-methods.csprojResolveAssemblyReference.cache
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\obj\Debug\map-methods.dll
+H:\Workspace\myself\arcgis api文章\WEBGIS\WEB\map-methods\obj\Debug\map-methods.pdb

@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>  
+</head>
+<body>
+    <script type="text/javascript">
+      
+        var xmlhttp = new XMLHttpRequest();       //实例化一个解析器对象
+        xmlhttp.open("GET", "note.xml", false);   //初始化 HTTP 请求参数，但是并不发送请求。第三个参数规定是否异步处理
+        xmlhttp.send();                           //发送 HTTP 请求，使用传递给 open() 方法的参数，以及传递给该方法的可选请求体。
+        var xmlDoc = xmlhttp.responseXML;         //对请求的响应，解析为 XML 并作为 Document 对象返回
+        var result=xmlDoc.getElementsByTagName("to")[1].childNodes[0].nodeValue
+        console.log(result);                      //pop
+    </script>
+</body>
+</html>

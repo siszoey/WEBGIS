@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>  
+</head>
+<body>
+    <input type="text" id="month" /><input type="button" id="jisuan" value="计算" /><br />
+    结果<p id="result"></p> 
+    <script type="text/javascript">
+        function Human() {
+            this.name = "xiaobaigis";
+            this.age = 21;
+        }
+        //将需要所有实例共享的方法、属性写进Human.prototype对象里
+        Human.prototype.alerttest = function (adj) {
+            alert("xiaobaigis is "+adj);
+        }
+        function Man() {
+        }
+        //将父类Human的实例作为子类Man的原型  实现方法共享
+        Man.prototype = new Human();    
+        var m = new Man();
+        m.alerttest("cool");   //"xiaobaigis is cool"
+    </script>
+</body>
+</html>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGIS API ForJavascript", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "html_css_javascript", "html_css\html_css_javascript.csproj", "{323C1F9B-6D53-450C-B945-8492725C7A6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "数据库", "数据库\数据库.csproj", "{56587899-C1BF-4CD9-B638-E6074301E127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{323C1F9B-6D53-450C-B945-8492725C7A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{323C1F9B-6D53-450C-B945-8492725C7A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{323C1F9B-6D53-450C-B945-8492725C7A6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56587899-C1BF-4CD9-B638-E6074301E127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56587899-C1BF-4CD9-B638-E6074301E127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56587899-C1BF-4CD9-B638-E6074301E127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56587899-C1BF-4CD9-B638-E6074301E127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

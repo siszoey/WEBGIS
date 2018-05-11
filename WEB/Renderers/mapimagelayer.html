@@ -3,45 +3,57 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
-    <script src="http://localhost:8008/3.18/init.js"></script>   
+    <title>Layer_MapImageLayer</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script>   
     <script type="text/javascript">
-        var map;
+        var map,sr,bool = false,initextent,url;
         require([
             "esri/map",
             "esri/layers/MapImage",
-           "esri/layers/MapImageLayer",
+            "esri/layers/MapImageLayer",
             "esri/layers/ArcGISDynamicMapServiceLayer",
             "esri/geometry/Extent",
+            "esri/SpatialReference",
             "dojo/domReady!"],
                 function (
                      Map,
                      MapImage,
                      MapImageLayer,
                      ArcGISDynamicMapServiceLayer,
-                     Extent) {
-                    var map = new Map("map");
+                     Extent,
+                     SpatialReference) {
+                     sr = new SpatialReference(4326)
+                     map = new Map("map", {
+                    });
                     var layer = new ArcGISDynamicMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/proandcap/MapServer");
                     //将地图服务对象添加到地图容器中
                     map.addLayer(layer);
-
                     var mil = new MapImageLayer({
-                        'id': 'usgs_screen_overlay'
+                        'id': 'testMapImageLayer'
                     });
-                    var mi = new MapImage({
-                        extent: new Extent(115.065477, 32.829642, 122.932974, 38.446202, { wkid: 4326 }),
-                        'href': "无标题.png"
-                    });
-                   
-                    mil.addImage(mi);
-                    map.addLayer(mil,0);
-                    
+                    document.getElementById("addImage").onclick = function () {
+                        var coordiarr=document.getElementById("extent").value.split(",");
+                        initextent = new Extent(coordiarr[0],coordiarr[1],coordiarr[2],coordiarr[3], sr);
+                        var newMI = new MapImage({
+                            extent: initextent,
+                            'href': document.getElementById("url").value
+                        });
+                        mil.addImage(newMI);
+                        map.addLayer(mil, 0);
+                    }
+                    document.getElementById("visiual").onclick = function () { 
+                        bool == false ? function () { mil.hide(); bool = true; }() : function () { mil.show(); bool = false; }()
+                    }    
                 });
     </script>
 </head>
 <body>
-    <div id="map">
+    <div id="map"></div>
+    <div>
+        URL:<input type="text" id="url" style="width:500px;" /><br />
+        范围:<input type="text" id="extent" style="width:500px;" /><br />
+        <input type="button" id="addImage" value="添加" /><input type="button" id="visiual" value="控制" />
     </div>
 </body>
 </html>

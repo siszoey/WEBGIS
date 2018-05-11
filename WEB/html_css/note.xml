@@ -1,0 +1,14 @@
+﻿<note>
+  <message>
+    <to>George</to>
+    <from>John</from>
+    <heading>Reminder</heading>
+    <body>Don't forget the meeting!</body>
+  </message>
+  <message>
+    <to>pop</to>
+    <from>lily</from>
+    <heading>Reminder</heading>
+    <body>Don't forget the meeting!</body>
+  </message>
+</note>

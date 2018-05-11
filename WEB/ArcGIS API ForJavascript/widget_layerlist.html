@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Layer List Dijit</title>
+    <link rel="stylesheet" href="http://localhost:8088/arcgis_js_api/library/3.23/3.23/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://localhost:8088/arcgis_js_api/library/3.23/3.23/esri/css/esri.css">
+    <script src="http://localhost:8088/arcgis_js_api/library/3.23/3.23/init.js"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            margin: 0;
+            font-family: "Open Sans";
+        }
+
+        #layerList {
+            width: 400px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+    </style>
+    <script>
+        require([
+          "esri/map",
+          "esri/layers/ArcGISDynamicMapServiceLayer",
+          "esri/dijit/LayerList",
+          "dojo/domReady!"
+        ], function (
+            Map,
+            ArcGISDynamicMapServiceLayer,
+            LayerList
+        ) {
+            var map = new Map("map");
+            //加载两个地图服务
+            var layer0 = new ArcGISDynamicMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceServiceDy/MapServer", { id: "动态省边界" ,visible:false});
+            map.addLayer(layer0);
+            var layer1 = new ArcGISDynamicMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincialCaptial/MapServer", { id: "省会", visible: false });
+            map.addLayer(layer1);
+          
+            var LayerListWidget = new LayerList({
+                map: map,
+                layers: [layer0,layer1]
+            }, "layerList");
+            LayerListWidget.startup();
+        });
+    </script>
+</head>
+<body class="claro">
+    <div id="layerList"></div>
+    <div id="map"></div>
+</body>
+</html>

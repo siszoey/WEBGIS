@@ -2,9 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title></title>  
 </head>
 <body>
-
+    <input type="text" id="month" /><input type="button" id="jisuan" value="计算" /><br />
+    结果<p id="result"></p> 
+    <script type="text/javascript">
+        document.getElementById("jisuan").onclick = function () {
+            console.time("shijian");
+            var num = document.getElementById("month").value;
+            function sum(n) {
+                if (n == 0) {
+                    return 0;
+                }
+                else if (n == 1) {
+                    return 1;
+                } else {
+                    return sum(n - 1) + sum(n - 2);
+                }
+            }
+            document.getElementById("result").innerText = sum(num);
+            console.timeEnd("shijian");
+        } 
+    </script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>  
+</head>
+<body>
+    <h2>Using the HttpRequest Object</h2>
+
+    <p>
+        <b>Status:</b>
+        <span id="A1"></span>
+    </p>
+
+    <p>
+        <b>Status text:</b>
+        <span id="A2"></span>
+    </p>
+
+    <p>
+        <b>Response:</b>
+        <br /><span id="A3"></span>
+    </p>
+
+    <button onclick="loadXMLDoc('note.xml')">Get XML</button>
+    <script type="text/javascript">
+    var xmlhttp;
+    function loadXMLDoc(url)
+    {
+        xmlhttp=null;
+        if (window.XMLHttpRequest)
+        {
+            console.log("window.XMLHttpRequest", window.XMLHttpRequest);
+            xmlhttp = new XMLHttpRequest();
+            console.log("xmlhttp", xmlhttp);
+        }
+        if (xmlhttp!=null)
+        {
+            xmlhttp.onreadystatechange=state_Change;
+            xmlhttp.open("GET",url,true);
+            xmlhttp.send(null);
+        }
+        else
+        {
+            alert("Your browser does not support XMLHTTP.");
+        }
+    }
+    function state_Change()
+    {
+        if (xmlhttp.readyState==4)
+        {// 4 = "loaded"
+            if (xmlhttp.status==200)
+            {// 200 = OK
+                document.getElementById('A1').innerHTML = xmlhttp.status;
+                document.getElementById('A2').innerHTML = xmlhttp.statusText;
+                document.getElementById('A3').innerHTML = xmlhttp.responseText;
+            }
+            else
+            {
+                alert("Problem retrieving XML data");
+            }
+        }
+    }
+    </script>
+</body>
+</html>

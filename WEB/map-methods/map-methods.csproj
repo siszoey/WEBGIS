@@ -66,7 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="矩阵顺时针循环输出.html" />
-    <Content Include="菲波那切数列.html" />
     <Content Include="Map-Methods.html" />
     <Content Include="Web.config" />
   </ItemGroup>

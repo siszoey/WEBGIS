@@ -6,10 +6,10 @@
     <!--<link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22/"></script>-->
-    <link rel="stylesheet" href="http://localhost:8008/3.18/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="http://localhost:8008/3.18/esri/css/esri.css">
 
-    <script src="http://localhost:8008/3.18/init.js"></script>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+
+    <script src="http://localhost:8008/3.23/init.js"></script>
 
    
     <style>
@@ -122,7 +122,7 @@
         }
         function setExtent() {
             //设置地图范围，范围必须和地图的坐标系需要一样
-            map.setExtent(testExtent);
+            map.setExtent(testExtent.expand(900));
         }
         function toScreen() {
             var scrpoint = map.toScreen(pointobj);
@@ -137,7 +137,7 @@
     <div id="mapDiv" style="height:700px;width:68.6%;float:left;border-right:5px solid gray;">
 
     </div>
-    <div style="height:700px;width:30%;float:right;padding-left:10px;border-left:5px solid gray;">
+    <div style="height:700px;width:20%;float:right;padding-left:10px;border-left:5px solid gray;">
         <h3>1.esri/map 对象的常用方法:</h3>
         <input class="buttonClass" type="button" onclick="addLayer()" value="addLayer()方法" />
         <input class="buttonClass" type="button" onclick="generatePoint()" value="map.addLayer（以graphiclayer为例）方法" />

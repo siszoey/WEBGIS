@@ -2,135 +2,93 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Draw Geometry</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
-    <script src="https://js.arcgis.com/3.23/"></script>
-    <style type="text/css">
-        .MapClass {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #000;
-        }
-    </style>  
-    <script type="text/javascript">
-    require([
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+
+    <script src="http://localhost:8008/3.23/init.js"></script>
+    <script>
+        var map, pointobj, sr, SimpleMarkerSymbolobj, pointGraphic, graphicLayerobj, colorobj;
+        require([
         "esri/map",
-        "dojo/on",
-         "esri/dijit/Basemap",
-        "esri/dijit/BasemapLayer",
+        "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/geometry/Point",
+        "esri/geometry/Extent",
+        "esri/SpatialReference",
         "esri/symbols/SimpleMarkerSymbol",
         "esri/symbols/SimpleLineSymbol",
-        "esri/symbols/SimpleFillSymbol",
-        "esri/toolbars/draw",
+        "esri/Color",
         "esri/graphic",
-        "dojo/colors",
-        "dojo/domReady!"],
-        function (
-            Map,
-            on,
-            Basemap,
-            BasemapLayer,
-            SimpleMarkerSymbol,
-            SimpleLineSymbol,
-            SimpleFillSymbol,
-            Draw,
-            Graphic,
-            Color) {
-            var provinceLayer = new BasemapLayer({
-                url: "http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincesService/MapServer"
+        "esri/layers/GraphicsLayer",
+        "dojo/on"
+        ], function (
+        Map,
+        ArcGISTiledMapServiceLayer,
+        Point,
+        Extent,
+        SpatialReference,
+        SimpleMarkerSymbol,
+        SimpleLineSymbol,
+        Color,
+        Graphic,
+        GraphicsLayer,
+        on) {
+            sr = new SpatialReference({ wkid: 4326 });
+            map = new Map("mapDiv", {
             });
-            var provincebasemap = new Basemap({
-                layers: [provinceLayer],
-                title: "中国",
-                thumbnailUrl: "province.png"
-            });
-            var map = new Map("mapDiv", {
-                basemap: provincebasemap,
-                center: [120.127653, 36.009423]
-            });
-            //使用toolbar上的绘图工具
-            var toolBar = new Draw(map);
-            //创建点符号
-            var pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,new Color("#FFFFCC"),12);
-            //线符号
-            lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255, 0, 0]), 3);
-            //面符号
-            polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, lineSymbol, new Color([255, 255, 0, 0.25]));
-            //在这里为避免给每一个button绑定click事件带来的麻烦，此处使用javascript事件委托机制
-            var drawTool = document.getElementById("drawTool");
-            drawTool.onclick = function (evt) {
-                var ev = ev || window.event;
-                var target = ev.target || ev.srcElement;
-                if (target.nodeName.toLocaleLowerCase() == 'button') {
-                    switch (target.id) {
-                        case 'point':
-                            toolBar.activate(Draw.POINT, {
-                                showTooltips: true
-                            });
-                            break;
-                        case 'multipoint':
-                            toolBar.activate(Draw.MULTI_POINT, {
-                                showTooltips: true
-                            })
-                            break;
-                        case 'line':
-                            toolBar.activate(Draw.POLYLINE, {
-                                showTooltips: true
-                            })
-                            break;
-                        case 'polygon':
-                            toolBar.activate(Draw.POLYGON, {
-                                showTooltips: true
-                            })
-                            break;
-                        case 'circle':
-                            toolBar.activate(Draw.CIRCLE, {
-                                showTooltips: true
-                            })
-                            break;
-                        case 'rectangle':
-                            toolBar.activate(Draw.RECTANGLE, {
-                                showTooltips: true
-                            })
-                            break;
-                        case "remove":
-                            map.graphics.clear();
-                            break;
-                        case 'disabledraw':
-                            toolBar.deactivate();
-                            break;
-                    }
-
+            TiledMapLayer = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer");
+            map.addLayer(TiledMapLayer);
+            //绘制点Graphic
+            pointobj = new Point([120.127653, 36.009423], sr);
+            SimpleMarkerSymbolobj = new SimpleMarkerSymbol(
+                SimpleMarkerSymbol.STYLE_SQUARE,   // 点类型
+                10,                     // 点尺寸
+                new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 1), // 外轮廓线
+                new Color([255, 255, 0, 0.85])
+                );    //点颜色
+            pointGraphic = new Graphic(pointobj, SimpleMarkerSymbolobj, sr);  // 创建一个点图形
+            graphicLayerobj = new GraphicsLayer();
+            graphicLayerobj.add(pointGraphic);           // 将点图形添加到graphic图层
+            //绘制面Graphic
+            var myPolygon = {
+                "geometry": {
+                    "rings": [
+                        [[82.36467, 30.801051], [85.896951, 31.528798], [88.104627, 29.747116], [85.455416, 28.973499]]
+                    ], "spatialReference": { "wkid": 4326 }
+                },
+                "symbol": {
+                    "color": [0, 0, 0, 64],
+                    "outline": {
+                        "color": [0, 0, 0, 255],
+                        "width": 1,
+                        "type": "esriSLS",
+                        "style": "esriSLSSolid"
+                    },
+                    "type": "esriSFS",
+                    "style": "esriSFSSolid"
                 }
-            }
-            toolBar.on("draw-complete", drawEndEvent)
-            function drawEndEvent(evt) {
-                //添加图形到地图
-                var symbol;
-                if (evt.geometry.type === "point" || evt.geometry.type === "multipoint") {
-                    symbol = pointSymbol;
-                } else if (evt.geometry.type === "line" || evt.geometry.type === "polyline") {
-                    symbol = lineSymbol;
-                }
-                else {
-                    symbol = polygonSymbol;
-                }
-                map.graphics.add(new Graphic(evt.geometry, symbol))
-            }
+            };
+            ploygonGraphic = new Graphic(myPolygon);
+            graphicLayerobj.add(ploygonGraphic);
+            map.addLayer(graphicLayerobj);
         });
+        function LocatePt() {
+            //定位点原理:即以指定点为中心显示地图
+            map.centerAt(pointobj);
+        }
+        function LocatePlg() {
+            // 定位点原理:即以多边形中心点为容器中心显示地图
+            // map.centerAt(ploygonGraphic.geometry.getCentroid());      //方法一
+            map.centerAt(ploygonGraphic.geometry.getExtent().getCenter());  //方法二
+        }
+
     </script>
 </head>
-<body>
-    <div id="mapDiv" class="MapClass"></div>
-    <div id="drawTool">
-        <button id="point">单点</button>
-        <button id="multipoint">多点</button>
-        <button id="line">折线</button>
-        <button id="polygon">面</button>
-        <button id="circle">圆行</button>
-        <button id="rectangle">矩形</button>
-        <button id="remove">清除</button>
-        <button id="disabledraw">禁止绘制工具</button>
+<body style="height:100%;width:100%;">
+    <div id="mapDiv" style="height:500px;width:650px;border:2px solid gray;">
+    </div>
+    <div>
+        <input type="button" onclick="LocatePt()" value="定位点" />
+        <input type="button" onclick="LocatePlg()" value="定位多边形" />
     </div>
 </body>
 </html>

@@ -65,7 +65,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="javascript变量提升.html" />
+    <Content Include="javascript类型.html" />
+    <Content Include="note1.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="note.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="undoandredo.html" />
+    <Content Include="xmlhttprequest AJAX.html" />
+    <Content Include="删除li.html" />
+    <Content Include="xml文档解析.html" />
+    <Content Include="xmlhttprequest.html" />
+    <Content Include="响应式设计.html" />
     <Content Include="Web.config" />
+    <Content Include="javascr原型理解.html" />
     <Content Include="菲波那切数列.html" />
   </ItemGroup>
   <ItemGroup>
