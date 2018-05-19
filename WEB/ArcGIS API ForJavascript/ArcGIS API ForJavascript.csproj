@@ -68,7 +68,6 @@
     <Content Include="airplane13.png" />
     <Content Include="getWms服务.html" />
     <Content Include="widget_legend_homebutton_scalebar.html" />
-    <Content Include="使用tomact服务器配置ArcGIS API .html" />
     <Content Include="widget_layerlist.html" />
     <Content Include="绘制折线.html" />
     <Content Include="Web.config" />
