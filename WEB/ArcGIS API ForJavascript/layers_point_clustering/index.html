@@ -4,20 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
     <title>Cluster</title>
-  <link rel="stylesheet" href="http://localhost:8011/library/3.23/3.23/esri/css/esri.css">
-  <script src="http://localhost:8011/library/3.23/3.23/init.js"></script>  
+  <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+  <script src="http://localhost:8008/3.23/init.js"></script>  
     <style>
-      html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-      #map{ margin: 0; padding: 0; }
-
-      /* center the image in the popup */
-      .esriViewPopup .gallery { margin: 0 auto !important; }
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        }
+      #map{
+         margin: 0; 
+         padding: 0;
+          }
     </style>
 
     <script>
      (function(){
-    'use strict'
-    require({
+     'use strict'
+     require({
         async:true,
         packages:[
             {
@@ -53,7 +58,7 @@
         "esri/geometry/Point",
         "esri/geometry/webMercatorUtils",
 
-        "extras/ClusterLayer1",
+        "extras/ClusterLayer",
 
         "dijit/layout/BorderContainer", 
         "dijit/layout/ContentPane", 
@@ -70,7 +75,7 @@
 
           var clusterLayer;
           var popupOptions = {
-            "markerSymbol": new SimpleMarkerSymbol("circle", 20, null, new Color([0, 0, 0, 0.25])),
+            "markerSymbol": new SimpleMarkerSymbol("circle", 20, null, new Color([0, 0, 0, 1])),
             "marginLeft": "20",
             "marginTop": "20"
           };
@@ -136,15 +141,15 @@
               "data": photoInfo.data,
               "distance": 100,
               "id": "clusters",
-              "labelColor": "#fff",
+              "labelColor": "#b9d3ec",
               "labelOffset": 10,
               "resolution": map.extent.getWidth() / map.width,
-              "singleColor": "#888",
+              "singleColor": "#b9d3ec",
               "singleTemplate": popupTemplate
             });
+            
             var defaultSym = new SimpleMarkerSymbol().setSize(4);
             var renderer = new ClassBreaksRenderer(defaultSym, "clusterCount");
-
             var picBaseUrl = "https://static.arcgis.com/images/Symbols/Shapes/";
             var blue = new PictureMarkerSymbol(picBaseUrl + "BluePin1LargeB.png", 32, 32).setOffset(0, 15);
             var green = new PictureMarkerSymbol(picBaseUrl + "GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
@@ -195,14 +200,9 @@
       });
     </script>
   </head>
-  
   <body>
-    <div data-dojo-type="dijit/layout/BorderContainer" 
-         data-dojo-props="design:'headline',gutters:false" 
-         style="width: 100%; height: 100%; margin: 0;">
-      <div id="map" 
-           data-dojo-type="dijit/layout/ContentPane" 
-           data-dojo-props="region:'center'"> 
+    
+      <div id="map"> 
       </div>
     </div>
   </body>
