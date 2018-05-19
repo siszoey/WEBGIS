@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+  <title>Layer_MapImageLayer</title>
+
+
+  <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+  <script src="http://localhost:8008/3.23/init.js"></script>   
+  <script type="text/javascript">
+ 
+    var map,sr,bool = false,initextent,url;
+    require([
+      "esri/map",
+      "esri/layers/MapImage",
+      "esri/layers/MapImageLayer",
+      "esri/layers/ArcGISDynamicMapServiceLayer",
+      "esri/geometry/Extent",
+      "esri/SpatialReference",
+	  "esri/tasks/PrintTask",
+	  "esri/tasks/PrintTemplate",
+	  "esri/tasks/PrintParameters",
+      "dojo/domReady!"],
+          function (
+               Map,
+               MapImage,
+               MapImageLayer,
+               ArcGISDynamicMapServiceLayer,
+               Extent,
+               SpatialReference,
+			   PrintTask,
+			   PrintTemplate,
+			   PrintParameters) {
+               sr = new SpatialReference(102100)
+               map = new Map("map", {
+			   basemap:"satellite"
+              });
+				var btn=document.getElementById("Btn");
+				//给地图打印按钮绑定事件
+				btn.onclick=function(){
+
+				btn.setAttribute("disabled","true");
+				btn.value="正在输出...";
+					//创建地图打印对象
+                    var printMap = new PrintTask("http://localhost:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+                    //创建地图打印模版
+                    var template = new PrintTemplate();
+                    //创建地图的打印参数，参数里面包括：模版和地图
+                    var params = new PrintParameters(); 
+                    //输出图片的空间参考
+                    printMap.outSpatialReference = map.SpatialReference 
+                    //打印图片的各种参数
+                    template.exportOptions = { 
+                        width: 850, 
+                        height: 650, 
+                        dpi: 96 
+                    };
+                    //打印输出的格式
+                    template.format = "PDF"; 
+                    //输出地图的布局
+                    template.layout = "MAP_ONLY"; 
+                    PrintTemplate 
+                    //设置参数地图
+                    params.map = map; 
+                    //设置参数模版
+                    params.template = template; 
+                    //运行结果
+                    printMap.execute(params, function(result){
+                        if (result != null) { 
+                            //网页打开生成的地图
+							(function(){
+								btn.disabled=false;
+								btn.value="地图打印";
+								alert("输出地图")
+							})()
+                            window.open(result.url); 
+                        } 
+                    }) 
+	}
+          });
+  </script>
+  
+  
+</head>
+<body>
+  <div id="map"></div>
+  <div>
+	   <input id="Btn" type="button" value="地图打印" />
+  </div>
+  <script>
+	
+             
+  </script>
+</body>
+</html>
