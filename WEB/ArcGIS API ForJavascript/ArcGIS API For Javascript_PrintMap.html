@@ -32,14 +32,14 @@
 			   PrintTask,
 			   PrintTemplate,
 			   PrintParameters) {
-               sr = new SpatialReference(102100)
-               map = new Map("map", {
-			   basemap:"satellite"
-              });
+			   
+				sr = new SpatialReference(102100)
+				map = new Map("map", {
+					basemap:"satellite"
+				});
 				var btn=document.getElementById("Btn");
 				//给地图打印按钮绑定事件
-				btn.onclick=function(){
-
+				btn.onclick=function(){		
 				btn.setAttribute("disabled","true");
 				btn.value="正在输出...";
 					//创建地图打印对象
@@ -72,7 +72,6 @@
 							(function(){
 								btn.disabled=false;
 								btn.value="地图打印";
-								alert("输出地图")
 							})()
                             window.open(result.url); 
                         } 
@@ -87,10 +86,6 @@
   <div id="map"></div>
   <div>
 	   <input id="Btn" type="button" value="地图打印" />
-  </div>
-  <script>
-	
-             
-  </script>
+  </div>  
 </body>
 </html>
