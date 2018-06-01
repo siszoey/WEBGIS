@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="" name="description">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>地图打印DPI测试</title>
+
+  <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+  <script src="http://localhost:8008/3.23/init.js"></script> 
+    <style>
+        html,body{
+            margin: 0;
+            width: 100%;
+            height: 100%;;
+        }
+        #map{
+            width: 100%;
+            height: 100%;;
+        }
+        #PrinterDiv{
+            position: absolute;
+            top: 0px;
+            right: 0px;;
+            width: 120px;
+            height: 100px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            text-align: center;
+            line-height: 30px;
+            padding: 10px;;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<div id="PrinterDiv">
+    <span style="width: 100%;font-weight: bold;text-align: left">设置打印DPI：</span>
+    <input id="dpi" style="width: 100%" value="96">
+    <button id="print">打印</button>
+</div>
+</body>
+
+<script type="text/javascript">
+    require([
+                "esri/map",
+                "esri/dijit/Print",
+                "esri/tasks/PrintTask",
+                "esri/tasks/PrintParameters",
+                "esri/tasks/PrintTemplate",
+                "esri/symbols/TextSymbol",
+                "esri/symbols/Font",
+                "esri/graphic",
+                "esri/geometry/Point",
+                "esri/symbols/SimpleMarkerSymbol",
+                "esri/symbols/SimpleLineSymbol",
+                "esri/Color",
+                "dojo/domReady!"
+            ],
+            function(
+                    Map,
+                    Print,
+                    PrintTask,
+                    PrintParameters,
+                    PrintTemplate,
+                    TextSymbol,
+                    Font,
+                    Graphic,
+                    Point,
+                    SimpleMarkerSymbol,
+                    SimpleLineSymbol,
+                    Color
+            ){
+                var map = new Map("map", {
+                    center: [-118, 34.5],
+                    zoom: 8,
+                    basemap: "topo"
+                });
+                map.on("load", function() {
+                    var point = new Point(-118,34.5);
+                    var symbols_point = new SimpleMarkerSymbol("square", 10, new SimpleLineSymbol(), new Color([0, 255, 0, 0.75]));
+                    var graphic = new Graphic(point, symbols_point);
+                    map.graphics.add(graphic);
+                    var symbols_text = new TextSymbol("测试DPI").setColor(
+                            new Color([128,0,0])).setAlign(Font.ALIGN_START).setFont(
+                            new Font("12pt").setWeight(Font.WEIGHT_BOLD).setFamily("微软雅黑")).setOffset(5, 5) ;
+                    var graphic = new Graphic(point, symbols_text);
+                    map.graphics.add(graphic);
+                });
+
+
+                var button = document.getElementById("print");
+                button.onclick = function(){
+                    var printTask = new PrintTask("http://123.206.81.238:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+                    var template = new PrintTemplate();
+                    var dpi = document.getElementById("dpi").value ;
+                    template.exportOptions = {
+                        width: 800,
+                        height: 600,
+                        dpi: Number(dpi)
+                    };
+                    template.format = "PDF";
+                    template.layout = "MAP_ONLY";
+                    template.preserveScale = false;
+                    var params = new PrintParameters();
+                    params.map = map;
+                    params.template = template;
+                    printTask.execute(params, function(evt){
+                        window.open(evt.url,"_blank");
+                    });
+                }
+            });
+</script>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Document</title>
+ <script src="html2canvas.js"></script>
+ <script src="jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="capture" style="padding: 10px; background: #f5da55">
+    <h4 style="color: #000; ">Hello world!</h4>
+</div>
+<input type="button" id="output" value="打印">
+<h1>12342234</h1>
+<script>
+
+// Converts canvas to an image
+ function convertCanvasToImage(canvas) {
+  var image = new Image();
+  image.src = canvas.toDataURL("image/png", 0.1);
+  return image;
+ }
+
+function convertHtml2Canvas() {
+  html2canvas(document.getElementById("capture"), {
+   allowTaint: false,
+   taintTest: true
+  }).then(function(canvas) {
+   var img = convertCanvasToImage(canvas);
+   document.body.appendChild(img);
+  }).catch(function(e) {
+   console.error('error', e);
+  });
+ }
+ document.getElementById("output").onclick=function(){
+  convertHtml2Canvas();
+ }
+
+</script>
+</body>

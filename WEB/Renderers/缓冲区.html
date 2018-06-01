@@ -35,7 +35,8 @@
                 GeometryService,
                 BufferParameters, Color) {
                 var map = new esri.Map("mapDiv", {
-                    center: [120.127653, 36.009423]
+                    center: [120.127653, 36.009423],
+					basemap:"oceans"
                 });
                 var layer = new esri.layers.ArcGISDynamicMapServiceLayer
                 ("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvincialCaptial/MapServer");
