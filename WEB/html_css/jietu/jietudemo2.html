@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+  <title>Layer_MapImageLayer</title>
+  <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+  <link rel="stylesheet" href="layui/css/layui.css">
+  <script src="html2canvas.js"></script>
+  <script src="http://localhost:8008/3.23/init.js"></script>   
+  
+   
+
+   <script src="layui/layui.js"></script>
+    <script type="text/javascript">
+    var map;
+    require([
+      "esri/map",
+      "dojo/domReady!"],
+          function (
+               Map) {
+				map = new Map("map", {
+					basemap:"satellite"
+				});
+				
+	});
+	 </script>
+</head>
+<body>
+  <div id="map"></div>
+  <div>
+	   <input type="button" id="output" value="打印">
+  </div> 
+ 
+<script type="text/javascript">
+	  var img;
+// Converts canvas to an image
+ function convertCanvasToImage(canvas) {
+  var image = new Image();
+  image.src = canvas.toDataURL("image/png", 0.1);
+  return image;
+ }
+
+function convertHtml2Canvas() {
+  html2canvas(document.getElementById("map"), {
+   useCORS : true,
+   allowTaint: false,
+   taintTest: true
+  }).then(function(canvas) {
+    img = convertCanvasToImage(canvas);
+  
+    layui.use(['layer', 'form'], function(){
+                var layer = layui.layer;
+                layer.open({
+                    title:'右键图片可以保存',
+                    type: 2,
+                    content:img.src,
+                    area:['100%', '100%']
+                });
+            });
+  }).catch(function(e) {
+   console.error('error', e);
+  });
+ }
+ document.getElementById("output").onclick=function(){
+  convertHtml2Canvas();
+  
+ }
+
+
+
+  </script>
+</body>
+</html>
