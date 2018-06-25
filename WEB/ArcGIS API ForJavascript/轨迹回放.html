@@ -4,8 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
     <title>Simple Map</title>
-    <link rel="stylesheet" href="http://localhost:8088/arcgis_js_api/library/3.23/3.23/esri/css/esri.css">
-    <script src="http://localhost:8088/arcgis_js_api/library/3.23/3.23/init.js"></script>
+	  <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script> 
     <style>
         html, body, #map {
             height: 100%;
@@ -116,9 +116,9 @@
                  on,
                  dom
         ) {
-            map = new Map("map", { logo: false });
-            var tiled = new Tiled("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer", { "id": "tiled" });
-            map.addLayer(tiled, 0);
+            map = new Map("map", { logo: false ,basemap:"oceans"});
+            //var tiled = new Tiled("http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer", { "id": "tiled" });
+            //map.addLayer(tiled, 0);
             sr = map.spatialReference;
             var mapCenter = new esri.geometry.Point(103.847, 36.0473, sr);
             map.centerAndZoom(mapCenter);
@@ -213,7 +213,7 @@
                     t = setTimeout('addPath()', 1000);
                     index++;
                 }
-                else {
+                if(index > 10) {
                     clearInterval(t);
                 }
             });

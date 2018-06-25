@@ -4,19 +4,14 @@
  <meta charset="UTF-8">
  <title>Document</title>
  <script src="html2canvas.js"></script>
- <script src="jquery-3.3.1.min.js"></script>
 </head>
 <body>
-<div id="capture" style="padding: 10px; background: #f5da55">
+<div id="printDIV" style="padding: 10px; background: #f5da55">
     <h4 style="color: #000; ">Hello world!</h4>
 </div>
 <input type="button" id="output" value="打印">
-<h1>12342234</h1>
+<h1>在下面将黄色背景的DIV打印成图片格式输出</h1>
 <script>
- <!-- html2canvas(document.querySelector("#capture")).then(canvas => { -->
-    <!-- document.body.appendChild(canvas) -->
-<!-- }); -->
-
 // Converts canvas to an image
  function convertCanvasToImage(canvas) {
   var image = new Image();
@@ -25,7 +20,7 @@
  }
 
 function convertHtml2Canvas() {
-  html2canvas(document.getElementById("capture"), {
+  html2canvas(document.getElementById("printDIV"), {
    allowTaint: false,
    taintTest: true
   }).then(function(canvas) {
@@ -38,6 +33,5 @@ function convertHtml2Canvas() {
  document.getElementById("output").onclick=function(){
   convertHtml2Canvas();
  }
-
 </script>
 </body>
