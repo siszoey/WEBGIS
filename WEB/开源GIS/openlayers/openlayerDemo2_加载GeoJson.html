@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="ol.css" type="text/css">
+    <style>
+      .map {
+        height: 800px;
+        width: 100%;
+      }
+    </style>
+    <script src="ol.js" type="text/javascript"></script>
+    <title>OpenLayers example</title>
+  </head>
+  <body>
+    <h2>My Map</h2>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+		//构造图层实例
+		var layers=[
+			new ol.layer.Tile({
+				source: new ol.source.OSM()
+			}),		                //OpenStreetMap提供的切片数据作为底图
+			new ol.layer.Tile({    
+			  source:new ol.source.TileWMS({    
+				  url:'http://localhost:8002/geoserver/xiaobai/wms',    
+				  params:{    
+					  'LAYERS':'xiaobai:map,xiaobai:Australia',//此处可以是单个图层名称，也可以是图层组名称，或多个图层名称，中间用，隔开
+					  'TILED':false    
+				  },    
+				  serverType:'geoserver'    //服务器类型
+			  })   
+		  })  
+          ];
+		  //构造地图实例
+		var map=new ol.Map({
+		    layers: layers,           //图层属性
+		    target:'map',    	      //地图容器dom
+		    view:new ol.View({        //初始化显示参数
+			  projection: 'EPSG:4326', 
+			  center:[102.73333,25.05],      
+			  zoom:3    
+
+		    }) ,  
+			controls: ol.control.defaults({  
+				attributionOptions: {  
+					collapsible: false  
+					}  
+				})  
+		  });
+    </script>
+  </body>
+</html>
