@@ -15,38 +15,90 @@
     <h2>My Map</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-		//构造图层实例
-		var layers=[
-			new ol.layer.Tile({
-				source: new ol.source.OSM()
-			}),		                //OpenStreetMap提供的切片数据作为底图
-			new ol.layer.Tile({    
-			  source:new ol.source.TileWMS({    
-				  url:'http://localhost:8002/geoserver/xiaobai/wms',    
-				  params:{    
-					  'LAYERS':'xiaobai:map,xiaobai:Australia',//此处可以是单个图层名称，也可以是图层组名称，或多个图层名称，中间用，隔开
-					  'TILED':false    
-				  },    
-				  serverType:'geoserver'    //服务器类型
-			  })   
-		  })  
-          ];
-		  //构造地图实例
-		var map=new ol.Map({
-		    layers: layers,           //图层属性
-		    target:'map',    	      //地图容器dom
-		    view:new ol.View({        //初始化显示参数
-			  projection: 'EPSG:4326', 
-			  center:[102.73333,25.05],      
-			  zoom:3    
+		var geojsonObject = {
+        'type': 'FeatureCollection',
+        'crs': {
+          'type': 'name',
+          'properties': {
+            'name': 'EPSG:3857'
+          }
+        },
+        'features': [{
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [0, 0]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': [[4e6, -2e6], [8e6, 2e6]]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': [[4e6, 2e6], [8e6, -2e6]]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [[[-5e6, -1e6], [-4e6, 1e6], [-3e6, -1e6]]]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'MultiLineString',
+            'coordinates': [
+              [[-1e6, -7.5e5], [-1e6, 7.5e5]],
+              [[1e6, -7.5e5], [1e6, 7.5e5]],
+              [[-7.5e5, -1e6], [7.5e5, -1e6]],
+              [[-7.5e5, 1e6], [7.5e5, 1e6]]
+            ]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'MultiPolygon',
+            'coordinates': [
+              [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
+              [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
+              [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
+            ]
+          }
+        }, {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'GeometryCollection',
+            'geometries': [{
+              'type': 'LineString',
+              'coordinates': [[-5e6, -5e6], [0, -5e6]]
+            }, {
+              'type': 'Point',
+              'coordinates': [4e6, -5e6]
+            }, {
+              'type': 'Polygon',
+              'coordinates': [[[1e6, -6e6], [2e6, -4e6], [3e6, -6e6]]]
+            }]
+          }
+        }]
+      };
+	  
+		var map = new ol.Map({
+        target: 'map',
+        layers: [
+         new ol.source.Vector({
+        features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+      })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 4
+        })
+      });
 
-		    }) ,  
-			controls: ol.control.defaults({  
-				attributionOptions: {  
-					collapsible: false  
-					}  
-				})  
-		  });
     </script>
   </body>
 </html>
