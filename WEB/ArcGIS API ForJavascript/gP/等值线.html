@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0"> 
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>ArcGIS API For Javascript绘制折线段</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script>
+     <script>
+        require([
+	"esri/map",
+	"esri/layers/ArcGISTiledMapServiceLayer",
+	"esri/layers/ArcGISDynamicMapServiceLayer",
+	"esri/geometry/Point",
+	"esri/SpatialReference",
+ 
+	"esri/symbols/SimpleMarkerSymbol",
+	"esri/symbols/TextSymbol",
+	"esri/layers/LabelClass",
+	"esri/renderers/SimpleRenderer",
+	"esri/layers/FeatureLayer",
+	"esri/Color",
+	"esri/symbols/SimpleLineSymbol",
+	"esri/layers/GraphicsLayer",
+	"esri/graphic",
+	"esri/tasks/FeatureSet",
+	"esri/geometry/geometryEngine",
+	"esri/tasks/Geoprocessor",
+	"dojo/domReady!"],
+function(Map, ArcGISTiledMapServiceLayer,ArcGISDynamicMapServiceLayer, Point, SpatialReference,
+SimpleMarkerSymbol,TextSymbol, LabelClass,SimpleRenderer,FeatureLayer,Color,SimpleLineSymbol,
+GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
+	
+	var features = [];
+	var map = new Map("map", {
+//          center: new Point(1.3091608700115489E7, 4273624.108445918, new SpatialReference({ wkid: 3857 })),
+		autoResize:true,
+		sliderStyle: "small",
+		logo: false,
+		showLabels : true
+	});
+	var sr = new SpatialReference({ wkid: 4326 });
+ 
+	var tiled = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer");
+	map.addLayer(tiled);
+ 
+ 
+	var gp = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/CustomContourServiceTool/GPServer/Model");
+ 
+	var graphicLayer = new GraphicsLayer({id:"dengzhixian"});
+	var markerSymbol = new SimpleMarkerSymbol({//模拟测站点数据的渲染
+		"color": [255,255,255,64],
+		"size": 12,
+		"angle": -30,
+		"xoffset": 0,
+		"yoffset": 0,
+		"type": "esriSMS",
+		"style": "esriSMSCircle",
+		"outline": {
+			"color": [0,0,0,255],
+			"width": 1,
+			"type": "esriSLS",
+			"style": "esriSLSSolid"
+		}
+	});
+	
+	//模拟测站点数据
+	var graphic1 = new Graphic(new Point(117.025717,36.653319,sr),markerSymbol,{"zvalue":10});
+	var graphic2 = new Graphic(new Point(120.843156,36.944611,sr),markerSymbol,{"zvalue":30});
+	var graphic3 = new Graphic(new Point(119.150605,35.754014,sr),markerSymbol,{"zvalue":400});
+	
+	//用于比对效果
+	graphicLayer.add(graphic1);
+	graphicLayer.add(graphic2);
+	graphicLayer.add(graphic3);
+	console.log("map",map);
+	map.addLayer(graphicLayer);
+	
+	//用于生成等值线的参数
+	features.push(graphic1);
+	features.push(graphic2);
+	features.push(graphic3);
+	
+ 
+	var featureset = new FeatureSet();
+	featureset.features = features;
+	var para = {
+		Input_point_features :featureset,
+		zvalue :"zvalue"
+//          clipfeature:"xian1"
+	}
+ 
+	gp.submitJob(para,function(result){
+		var slsymbol = new SimpleLineSymbol(//标识等值线的渲染
+				SimpleLineSymbol.STYLE_DASH,
+				new Color([255,0,0]),3
+		);
+		var jobId = result.jobId;
+		var status = result.jobStatus;
+		if(status == esri.tasks.JobInfo.STATUS_SUCCEEDED) {
+			gp.getResultData(jobId, "output", function(jobInfo){
+				var features = jobInfo.value.features;
+				dojo.forEach(features,function(graphic){
+					graphic.setSymbol(slsymbol);
+					graphicLayer.add(graphic);
+				});
+				map.addLayer(graphicLayer);
+			});
+		}
+	});
+}
+);
+
+    </script>
+</head>
+<body>
+   <div id="map"></div>
+</body>
+</html>

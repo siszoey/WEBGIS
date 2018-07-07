@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0"> 
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script>
+     <script>
+       require(["esri/map",  "esri/layers/WebTiledLayer","esri/geometry/Point"], function(Map,WebTiledLayer,Point) {
+		var map = new Map("map",{
+			center:new Point({  
+					"x": 116.40969,  
+					"y": 39.89945,  
+					"spatialReference": {  
+						"wkid": 4326
+					}
+				}),
+			zoom:12
+			});
+		var tianditu = new WebTiledLayer("http://${subDomain}.tianditu.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL=${col}&TILEROW=${row}&TILEMATRIX=${level}", {
+				"copyright": '天地图',
+				"id": "tianMap",
+				"subDomains": ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"]
+			} );
+		map.addLayer(tianditu);
+	   })
+    </script>
+</head>
+<body>
+   <div id="map"></div>
+</body>
+</html>
