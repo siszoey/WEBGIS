@@ -6,7 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0"> 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title>ArcGIS API For Javascript绘制折线段</title>
+    <title>等值线</title>
     <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
     <script src="http://localhost:8008/3.23/init.js"></script>
      <script>
@@ -40,16 +40,16 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
 		autoResize:true,
 		sliderStyle: "small",
 		logo: false,
-		showLabels : true
+		showLabels : true,
+		SpatialReference:new SpatialReference({ wkid: 4326 })
 	});
 	var sr = new SpatialReference({ wkid: 4326 });
  
 	var tiled = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer");
 	map.addLayer(tiled);
- 
- 
-	var gp = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/CustomContourServiceTool/GPServer/Model");
- 
+	
+	var gp = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/Model2/GPServer/Model%201");
+  gp.outSpatialReference = new SpatialReference({wkid:4326});
 	var graphicLayer = new GraphicsLayer({id:"dengzhixian"});
 	var markerSymbol = new SimpleMarkerSymbol({//模拟测站点数据的渲染
 		"color": [255,255,255,64],
@@ -70,26 +70,22 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
 	//模拟测站点数据
 	var graphic1 = new Graphic(new Point(117.025717,36.653319,sr),markerSymbol,{"zvalue":10});
 	var graphic2 = new Graphic(new Point(120.843156,36.944611,sr),markerSymbol,{"zvalue":30});
-	var graphic3 = new Graphic(new Point(119.150605,35.754014,sr),markerSymbol,{"zvalue":400});
 	
 	//用于比对效果
 	graphicLayer.add(graphic1);
 	graphicLayer.add(graphic2);
-	graphicLayer.add(graphic3);
-	console.log("map",map);
-	map.addLayer(graphicLayer);
 	
 	//用于生成等值线的参数
 	features.push(graphic1);
-	features.push(graphic2);
-	features.push(graphic3);
-	
+	features.push(graphic2);	
  
 	var featureset = new FeatureSet();
+
 	featureset.features = features;
 	var para = {
-		Input_point_features :featureset,
-		zvalue :"zvalue"
+	
+		Testpoint:featureset,
+		Contour_interval :"10"
 //          clipfeature:"xian1"
 	}
  
@@ -98,18 +94,25 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
 				SimpleLineSymbol.STYLE_DASH,
 				new Color([255,0,0]),3
 		);
+		console.log("result",result);
 		var jobId = result.jobId;
 		var status = result.jobStatus;
 		if(status == esri.tasks.JobInfo.STATUS_SUCCEEDED) {
 			gp.getResultData(jobId, "output", function(jobInfo){
+			console.log("jobInfo",jobInfo);
 				var features = jobInfo.value.features;
 				dojo.forEach(features,function(graphic){
 					graphic.setSymbol(slsymbol);
 					graphicLayer.add(graphic);
 				});
 				map.addLayer(graphicLayer);
+				
 			});
 		}
+	},function(status){
+		console.log("status",status);
+	},function(e){
+		console.log("error",e);
 	});
 }
 );
