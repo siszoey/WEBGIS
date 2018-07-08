@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>利用GP调用自定义buffer工具实现缓冲区分析功能</title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+    <script src="http://localhost:8008/3.23/init.js"></script>
+    <style>
+        html, body, #map {
+            width:   100%;
+            height:  100%;
+            margin:  0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        require([
+            "esri/Color",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/map",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/toolbars/draw",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/graphic",
+            "esri/geometry/Extent",
+            "esri/tasks/Geoprocessor",
+            "esri/SpatialReference",
+            "esri/tasks/FeatureSet",
+            "esri/tasks/JobInfo",
+            "esri/tasks/LinearUnit"
+        ], function(
+             Color,
+             ArcGISTiledMapServiceLayer,
+             Map,SimpleFillSymbol,
+             SimpleLineSymbol,
+             Draw,
+             SimpleMarkerSymbol,
+             Graphic,
+             Extent,
+             Geoprocessor,
+             SpatialReference,
+             FeatureSet,
+             JobInfo,
+             LinearUnit
+        ) {
+            var map;
+            map = new Map("map", {
+            });
+            var Layer = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer", {
+                "id": "layer",
+                "opacity": 0.75,
+                "showAttribution":false
+            });
+            map.addLayer(Layer);
+            var  gpBuffer=new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/buffer_demo1/GPServer/Model");
+            gpBuffer.outSpatialReference=new SpatialReference({wkid:3857});
+            var bufferParams={};
+            map.on("click",function (e) {
+                //debugger;
+                var featureSet=new FeatureSet();
+                var graphics=new Graphic(e.mapPoint,new SimpleMarkerSymbol());
+                featureSet.spatialReference=new SpatialReference({wkid:3857});
+                map.graphics.add(graphics);
+                featureSet.features=[graphics];
+                featureSet.geometryType="point";
+                var Dis = new LinearUnit();
+                Dis.distance = 1;
+                Dis.units = esri.Units.KILOMETERS;
+                bufferParams={
+                    inpurFeature:featureSet,    //输入要素名称要和发服务的参数名称一致
+                    Distance:Dis                  //距离名称要和发服务的距离参数一致
+                };
+				console.log("bufferParams",bufferParams);
+                gpBuffer.submitJob(bufferParams,successResult);
+            })
+            function successResult(result){
+			console.log("result",result);
+                var jobId = result.jobId;
+                var status = result.jobStatus;
+                if(status ==="esriJobSucceeded") {
+                    gpBuffer.getResultData(jobId, "Buffer__3_ ", addResults);    //第二个参数要和发服务的结果集名称一致
+                }
+            }
+            function addResults(results){
+			console.log("results",results);
+                var features = results.value.features;
+                if(features.length>0) {
+                    for (var i = 0, length = features.length; i != length; ++i) {
+                        var feature = features[i];
+                        var polySymbolRed = new SimpleFillSymbol();
+                        polySymbolRed.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 0, 0.5]), 1));
+                        polySymbolRed.setColor(new Color([255, 0, 0, 0.5]));
+                        feature.setSymbol(polySymbolRed);
+                        map.graphics.add(feature);
+						console.log("  map.graphics",map.graphics);
+                    }
+                    alert("提示计算成功！");
+                }
+                else{
+                    alert("提示计算失败！");
+                }
+            }
+        });
+ 
+    </script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
