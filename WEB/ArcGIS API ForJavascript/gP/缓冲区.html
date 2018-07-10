@@ -61,17 +61,17 @@
                 var featureSet=new FeatureSet();
                 var graphics=new Graphic(e.mapPoint,new SimpleMarkerSymbol());
                 featureSet.spatialReference=new SpatialReference({wkid:3857});
+				console.log(JSON.stringify(graphics))
                 map.graphics.add(graphics);
                 featureSet.features=[graphics];
                 featureSet.geometryType="point";
                 var Dis = new LinearUnit();
-                Dis.distance = 1;
+                Dis.distance = 30;
                 Dis.units = esri.Units.KILOMETERS;
                 bufferParams={
-                    inpurFeature:featureSet,    //输入要素名称要和发服务的参数名称一致
-                    Distance:Dis                  //距离名称要和发服务的距离参数一致
+                    inpurFeature:featureSet,      //1.输入要素名称要和发服务的参数名称一致
+                    Distance:Dis                  //2.距离名称要和发服务的距离参数一致
                 };
-				console.log("bufferParams",bufferParams);
                 gpBuffer.submitJob(bufferParams,successResult);
             })
             function successResult(result){
@@ -79,11 +79,10 @@
                 var jobId = result.jobId;
                 var status = result.jobStatus;
                 if(status ==="esriJobSucceeded") {
-                    gpBuffer.getResultData(jobId, "Buffer__3_ ", addResults);    //第二个参数要和发服务的结果集名称一致
+                    gpBuffer.getResultData(jobId, "Buffer__3_ ", addResults);    //3.第二个参数要和发服务的结果集名称一致
                 }
             }
             function addResults(results){
-			console.log("results",results);
                 var features = results.value.features;
                 if(features.length>0) {
                     for (var i = 0, length = features.length; i != length; ++i) {
@@ -93,12 +92,11 @@
                         polySymbolRed.setColor(new Color([255, 0, 0, 0.5]));
                         feature.setSymbol(polySymbolRed);
                         map.graphics.add(feature);
-						console.log("  map.graphics",map.graphics);
                     }
-                    alert("提示计算成功！");
+                    alert("缓冲成功！");
                 }
                 else{
-                    alert("提示计算失败！");
+                    alert("缓冲失败！");
                 }
             }
         });

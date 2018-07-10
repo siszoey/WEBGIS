@@ -29,14 +29,13 @@
 	"esri/tasks/FeatureSet",
 	"esri/geometry/geometryEngine",
 	"esri/tasks/Geoprocessor",
+	 "esri/layers/ImageParameters",
 	"dojo/domReady!"],
 function(Map, ArcGISTiledMapServiceLayer,ArcGISDynamicMapServiceLayer, Point, SpatialReference,
 SimpleMarkerSymbol,TextSymbol, LabelClass,SimpleRenderer,FeatureLayer,Color,SimpleLineSymbol,
-GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
+GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	
-	var features = [];
 	var map = new Map("map", {
-//          center: new Point(1.3091608700115489E7, 4273624.108445918, new SpatialReference({ wkid: 3857 })),
 		autoResize:true,
 		sliderStyle: "small",
 		logo: false,
@@ -48,8 +47,9 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
 	var tiled = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer");
 	map.addLayer(tiled);
 	
-	var gp = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/Modelidw/GPServer/Modelidw");
-  gp.outSpatialReference = new SpatialReference({wkid:4326});
+	var Kriging_GP = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/krigingDemo2/GPServer/krigingDemo1");
+	Kriging_GP.outSpatialReference = new SpatialReference({wkid:4326});
+	
 	var graphicLayer = new GraphicsLayer({id:"dengzhixian"});
 	var markerSymbol = new SimpleMarkerSymbol({//模拟测站点数据的渲染
 		"color": [255,255,255,64],
@@ -76,51 +76,59 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor) {
 	graphicLayer.add(graphic1);
 	graphicLayer.add(graphic2);
 	graphicLayer.add(graphic3);
-	graphicLayer.add(graphic4);
-	//用于生成等值线的参数
+	graphicLayer.add(graphic4)
 	
-	
+	var features = [];
 	var featureset = new FeatureSet();
+	featureset.spatialReference=new SpatialReference({wkid:4326});
+	console.log("featureset",featureset);
 	features.push(graphic1);
 	features.push(graphic2);	
 	features.push(graphic3);
 	features.push(graphic4);	
- 
 
 	featureset.features = features;
-featureset.spatialReference=new SpatialReference({wkid:4326});
-	var para = {
 	
-		Testpoint:featureset,
-		Z_value_field :"zvalue "
-//          clipfeature:"xian1"
+	
+	var para = {
+		input:featureset
 	}
+ //Kriging_GP.submitJob(para).then(gpJobComplete,function(error){
+	//console.log("error",error);
+ //});
  
-	gp.submitJob(para,function(result){
-		var slsymbol = new SimpleLineSymbol(//标识等值线的渲染
-				SimpleLineSymbol.STYLE_DASH,
-				new Color([255,0,0]),3
-		);
-		console.log("result",result);
-		var jobId = result.jobId;
-		var status = result.jobStatus;
-		if(status == "esriJobSucceeded") {
-			gp.getResultData(jobId, "Output_polyline_features ", function(jobInfo){
-			console.log("jobInfo",jobInfo);
-				var features = jobInfo.value.features;
-				dojo.forEach(features,function(graphic){
-					graphic.setSymbol(slsymbol);
-					graphicLayer.add(graphic);
-				});
-				map.addLayer(graphicLayer);
-				
-			});
-		}
-	},function(status){
-		console.log("status",status);
-	},function(e){
-		console.log("error",e);
-	});
+  Kriging_GP.submitJob(para,
+  function gpJobComplete(jobinfo) {
+	console.log("jobinfo",jobinfo);
+	if (jobinfo.jobStatus == "job-succeeded") {
+		// var imageParam = new ImageParameters();
+		// imageParam.imageSpatialReference = new SpatialReference(102100);
+		// imageParam.transparent = true;
+		var imageParams = new ImageParameters({
+		format: "png32",
+		imageSpatialReference:sr
+		});
+		
+		<!-- var imageParams = new ImageParameters(); -->
+		<!-- imageParams.imageSpatialReference = map.spatialReference; -->
+		Kriging_GP.getResultImageLayer(jobInfo.jobId, "output",imageParams, function(gpLayer){
+		  gpLayer.setOpacity(0.5);
+		  map.addLayer(gpLayer);
+		});
+		//var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams);
+		//layer.opacity =0.7;
+		//layer.title = "空气质量监测系统";
+		//map.layers.add(layer);
+		//map.addLayer(layer);
+	} 
+},
+  function(status){
+	console.log("status",status);
+  },
+  function(error){
+	console.log("error",error);
+ })
+	//GP完成之后加载结果图层
 }
 );
 
