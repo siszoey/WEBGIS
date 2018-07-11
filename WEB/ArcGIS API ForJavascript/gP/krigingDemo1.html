@@ -77,7 +77,8 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	graphicLayer.add(graphic2);
 	graphicLayer.add(graphic3);
 	graphicLayer.add(graphic4)
-	
+	console.log("graphic1",graphic1);
+	console.log("graphic1",JSON.stringify(graphic1.symbol)); 
 	var features = [];
 	var featureset = new FeatureSet();
 	featureset.spatialReference=new SpatialReference({wkid:4326});
@@ -103,16 +104,28 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	if (jobinfo.jobStatus == "esriJobSucceeded") {
 		console.log("1");
 		var imageParams = new ImageParameters({
-		format: "jpg ",
+		format: "png32 ",
 		imageSpatialReference:sr
 		});
-		Kriging_GP.getResultImageLayer(jobInfo.jobId,imageParams,function(gpLayer){
-		console.log("2");
-		  gpLayer.setOpacity(0.5);
-		  map.addLayer(gpLayer);
-		});
-			console.log("3");
-		<!-- var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams); -->
+			console.log("imageParams",imageParams);
+			var mapserviceurl = "http://localhost:6080/arcgis/rest/services//gP/krigingDemo1/MapServer";  
+            var mapurl = mapserviceurl + "/" + jobinfo.jobId;  
+
+			var resultlayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapserviceurl,{  
+            "opacity":0.7  
+             });  
+			 //map.addLayer(resultlayer);
+			 var imageParam = new esri.layers.ImageParameters();  
+            imageParam.imageSpatialReference = new esri.SpatialReference({wkid:4326});  
+            imageParam.transparent = true; 
+		Kriging_GP.getResultImageLayer(jobInfo.jobId,'output',imageParam,getResultImaLayer);
+		<!-- function(gpLayer){-->
+		<!--console.log("2");-->
+		 <!-- gpLayer.setOpacity(0.5);-->
+		 <!-- map.addLayer(gpLayer);-->
+		<!--});-->
+		<!--	console.log("3");-->
+		<!--var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams); -->
 		<!-- layer.opacity =0.7; -->
 		<!-- layer.title = "空气质量监测系统"; -->
 		<!-- map.layers.add(layer); -->
@@ -129,6 +142,14 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 }
 );
 
+	function getResultImaLayer(gpLayer){  
+
+          gpLayer.setOpacity(0.5);  
+          //alert(myMap.layerIds.length+"个图层");
+          map.addLayer(gpLayer,2);  
+          //alert(myMap.layerIds.length+"个图层");
+
+         }  
     </script>
 </head>
 <body>
