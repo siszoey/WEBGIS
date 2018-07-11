@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0"> 
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+	
+	<script type="text/javascript">
+            var dojoConfig = {
+                async: true, //是否异步
+                parseOnLoad: true,
+                packages: [{ //解释：require(["js/.."],function(){}) 中  js/ 即为 location的值
+                    name: "js", //对应require引用包里的js 
+                    location: location.pathname.replace(/\/[^/]*$/, '') + '/js' //对应的路径
+                }]
+            };
+        </script>
+    <script src="http://localhost:8008/3.23/init.js"></script>
+	
+     <script>
+      require(["esri/map","js/TDWorld_Imagery"], function (Map,TDWorld_Imagery) {
+                map = new Map("map", {
+                    center: [118.15, 24.55],
+                    zoom: 11,
+                    logo : false //logo
+                });
+                var baselayer = new TDWorld_Imagery();
+                map.addLayer(baselayer);
+       
+           });
+		   
+    </script>
+</head>
+<body>
+   <div id="map"></div>
+</body>
+</html>
