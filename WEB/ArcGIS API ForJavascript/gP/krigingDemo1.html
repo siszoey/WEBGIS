@@ -44,10 +44,10 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	});
 	var sr = new SpatialReference({ wkid: 4326 });
  
-	var tiled = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer");
+	var tiled = new ArcGISTiledMapServiceLayer("	http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer");
 	map.addLayer(tiled);
 	
-	var Kriging_GP = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/krigingDemo2/GPServer/krigingDemo1");
+	var Kriging_GP = new Geoprocessor("http://localhost:6080/arcgis/rest/services/Gpservice/krigingDemo1/GPServer/Model");
 	Kriging_GP.outSpatialReference = new SpatialReference({wkid:4326});
 	
 	var graphicLayer = new GraphicsLayer({id:"dengzhixian"});
@@ -100,20 +100,23 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
   Kriging_GP.submitJob(para,
   function gpJobComplete(jobinfo) {
 	console.log("jobinfo",jobinfo);
-	if (jobinfo.jobStatus == "job-succeeded") {
+	if (jobinfo.jobStatus == "esriJobSucceeded") {
 		// var imageParam = new ImageParameters();
 		// imageParam.imageSpatialReference = new SpatialReference(102100);
 		// imageParam.transparent = true;
 		var imageParams = new ImageParameters({
 		format: "png32",
-		imageSpatialReference:sr
+		imageSpatialReference:new SpatialReference({wkid:4326})
 		});
-		
+		console.log("进来");
 		<!-- var imageParams = new ImageParameters(); -->
 		<!-- imageParams.imageSpatialReference = map.spatialReference; -->
 		Kriging_GP.getResultImageLayer(jobInfo.jobId, "output",imageParams, function(gpLayer){
+		console.log("gpLayer",gpLayer);
 		  gpLayer.setOpacity(0.5);
 		  map.addLayer(gpLayer);
+		},function(e){
+			console.log("e",e);
 		});
 		//var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams);
 		//layer.opacity =0.7;

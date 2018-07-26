@@ -33,7 +33,6 @@
          return document.getElementById(id);
          }
 
-    
 </script>
 <script>
     var mouseoffsetX=0;
@@ -45,7 +44,7 @@
         var e=e||window.event;
         startX=get("move").offsetLeft,
         startY=get("move").offsetTop;
-        mouseoffsetX=e.pageX-startX;//鼠标初始位置偏移量
+        mouseoffsetX=e.pageX-startX;//鼠标初始位置
         mouseoffsetY=e.pageY-startY;
         isDraging=true;
     })
