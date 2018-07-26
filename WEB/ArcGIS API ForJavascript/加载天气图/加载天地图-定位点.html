@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0"> 
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="http://localhost:8008/3.23/esri/css/esri.css">
+	
+	<script type="text/javascript">
+            var dojoConfig = {
+                async: true, //是否异步
+                parseOnLoad: true,
+                packages: [{ //解释：require(["js/.."],function(){}) 中  js/ 即为 location的值
+                    name: "js", //对应require引用包里的js 
+                    location: location.pathname.replace(/\/[^/]*$/, '') + '/js' //对应的路径
+                }]
+            };
+        </script>
+    <script src="http://localhost:8008/3.23/init.js"></script>
+	
+     <script>
+      require(["esri/map", "js/TDTImgLayer","js/TDTImgAnnoLayer","esri/geometry/Point",
+      "esri/geometry/Extent",
+      "esri/SpatialReference",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/symbols/SimpleLineSymbol",
+      "esri/Color",
+      "esri/graphic",
+      "esri/layers/GraphicsLayer"], function (Map, TDTImgLayer,TDTImgAnnoLayer,Point,
+      Extent,
+      SpatialReference,
+      SimpleMarkerSymbol,
+      SimpleLineSymbol,
+      Color,
+      Graphic,
+      GraphicsLayer) {
+	   var sr = new SpatialReference({ wkid: 4326 });
+                map = new Map("map", {
+                    //center: [118.15, 24.55],
+                    zoom: 11,
+                    logo : false //logo
+                });
+				
+	   var baselayer = new TDTImgLayer();
+                map.addLayer(baselayer);
+        var Annolayer = new TDTImgAnnoLayer();
+                map.addLayer(Annolayer);
+      var pointobj = new Point([110.127653, 36.009423], sr);
+      var SimpleMarkerSymbolobj = new SimpleMarkerSymbol(
+          SimpleMarkerSymbol.STYLE_SQUARE,   // 点类型
+          10,                     // 点尺寸
+          new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 1), // 外轮廓线
+          new Color([255, 255, 0, 0.85])
+          );    //点颜色
+      var pointGraphic = new Graphic(pointobj, SimpleMarkerSymbolobj, sr);  // 创建一个点图形
+     var  graphicLayer = new GraphicsLayer();
+      graphicLayer.add(pointGraphic);
+				map.addLayer(graphicLayer);
+               
+				
+				//定位点原理:即以指定点为中心显示地图
+			map.centerAt(pointobj);
+           });
+		   
+    </script>
+</head>
+<body>
+   <div id="map"></div>
+</body>
+</html>

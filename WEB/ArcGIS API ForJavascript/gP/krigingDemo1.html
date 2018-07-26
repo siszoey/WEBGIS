@@ -44,10 +44,10 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	});
 	var sr = new SpatialReference({ wkid: 4326 });
  
-	var tiled = new ArcGISTiledMapServiceLayer("	http://localhost:6080/arcgis/rest/services/gisTutorial/ProvinceService/MapServer");
+	var tiled = new ArcGISTiledMapServiceLayer("http://localhost:6080/arcgis/rest/services/popstar/methods/MapServer");
 	map.addLayer(tiled);
 	
-	var Kriging_GP = new Geoprocessor("http://localhost:6080/arcgis/rest/services/Gpservice/krigingDemo1/GPServer/Model");
+	var Kriging_GP = new Geoprocessor("http://localhost:6080/arcgis/rest/services/gP/krigingDemo1/GPServer/krigingDemo1");
 	Kriging_GP.outSpatialReference = new SpatialReference({wkid:4326});
 	
 	var graphicLayer = new GraphicsLayer({id:"dengzhixian"});
@@ -77,7 +77,8 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 	graphicLayer.add(graphic2);
 	graphicLayer.add(graphic3);
 	graphicLayer.add(graphic4)
-	
+	console.log("graphic1",graphic1);
+	console.log("graphic1",JSON.stringify(graphic1.symbol)); 
 	var features = [];
 	var featureset = new FeatureSet();
 	featureset.spatialReference=new SpatialReference({wkid:4326});
@@ -101,28 +102,34 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
   function gpJobComplete(jobinfo) {
 	console.log("jobinfo",jobinfo);
 	if (jobinfo.jobStatus == "esriJobSucceeded") {
-		// var imageParam = new ImageParameters();
-		// imageParam.imageSpatialReference = new SpatialReference(102100);
-		// imageParam.transparent = true;
+		console.log("1");
 		var imageParams = new ImageParameters({
-		format: "png32",
-		imageSpatialReference:new SpatialReference({wkid:4326})
+		format: "png32 ",
+		imageSpatialReference:sr
 		});
-		console.log("进来");
-		<!-- var imageParams = new ImageParameters(); -->
-		<!-- imageParams.imageSpatialReference = map.spatialReference; -->
-		Kriging_GP.getResultImageLayer(jobInfo.jobId, "output",imageParams, function(gpLayer){
-		console.log("gpLayer",gpLayer);
-		  gpLayer.setOpacity(0.5);
-		  map.addLayer(gpLayer);
-		},function(e){
-			console.log("e",e);
-		});
-		//var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams);
-		//layer.opacity =0.7;
-		//layer.title = "空气质量监测系统";
-		//map.layers.add(layer);
-		//map.addLayer(layer);
+			console.log("imageParams",imageParams);
+			var mapserviceurl = "http://localhost:6080/arcgis/rest/services//gP/krigingDemo1/MapServer";  
+            var mapurl = mapserviceurl + "/" + jobinfo.jobId;  
+
+			var resultlayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapserviceurl,{  
+            "opacity":0.7  
+             });  
+			 //map.addLayer(resultlayer);
+			 var imageParam = new esri.layers.ImageParameters();  
+            imageParam.imageSpatialReference = new esri.SpatialReference({wkid:4326});  
+            imageParam.transparent = true; 
+		Kriging_GP.getResultImageLayer(jobInfo.jobId,'output',imageParam,getResultImaLayer);
+		<!-- function(gpLayer){-->
+		<!--console.log("2");-->
+		 <!-- gpLayer.setOpacity(0.5);-->
+		 <!-- map.addLayer(gpLayer);-->
+		<!--});-->
+		<!--	console.log("3");-->
+		<!--var layer=Kriging_GP.getResultMapImageLayer(jobinfo.jobId,imageParams); -->
+		<!-- layer.opacity =0.7; -->
+		<!-- layer.title = "空气质量监测系统"; -->
+		<!-- map.layers.add(layer); -->
+		<!-- map.addLayer(layer); -->
 	} 
 },
   function(status){
@@ -135,6 +142,14 @@ GraphicsLayer,Graphic,FeatureSet,geometryEngine,Geoprocessor,ImageParameters) {
 }
 );
 
+	function getResultImaLayer(gpLayer){  
+
+          gpLayer.setOpacity(0.5);  
+          //alert(myMap.layerIds.length+"个图层");
+          map.addLayer(gpLayer,2);  
+          //alert(myMap.layerIds.length+"个图层");
+
+         }  
     </script>
 </head>
 <body>
